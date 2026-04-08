@@ -6,21 +6,19 @@ import 'package:flutter_starter/di.dart';
 import 'package:flutter_starter/flavors.dart';
 import 'package:flutter_starter/presenter/languages/translation_keys.g.dart';
 import 'package:flutter_starter/presenter/navigation/navigation.dart';
-import 'package:flutter_starter/presenter/pages/login/login_bloc.dart';
-import 'package:flutter_starter/presenter/pages/login/login_event.dart';
-import 'package:flutter_starter/presenter/pages/login/login_selector.dart';
-import 'package:flutter_starter/presenter/pages/login/login_state.dart';
+import 'package:flutter_starter/presenter/pages/login/cubit/login_cubit.dart';
+import 'package:flutter_starter/presenter/pages/login/cubit/login_state.dart';
 import 'package:flutter_starter/presenter/themes/extensions.dart';
 import 'package:flutter_starter/presenter/widgets/loading_indicator.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget implements AutoRouteWrapper {
-  const LoginPage();
+  const LoginPage({super.key});
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return BlocProvider<LoginBloc>(
-      create: (ctx) => provider.get<LoginBloc>(),
+    return BlocProvider<LoginCubit>(
+      create: (ctx) => provider.get<LoginCubit>(),
       child: this,
     );
   }
@@ -30,85 +28,164 @@ class LoginPage extends StatefulWidget implements AutoRouteWrapper {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  LoginBloc get _bloc => context.read<LoginBloc>();
-
-  void _onUsernameChanged(String username) {
-    _bloc.add(LoginUsernameChanged(username));
-  }
-
-  void _onPasswordChanged(String password) {
-    _bloc.add(LoginPasswordChanged(password));
-  }
-
-  void _onLoginPressed() {
-    _bloc.add(const LoginStarted());
-  }
-
-  void _onSuccess(BuildContext context, LoginState state) {
-    context.router.replaceAll([const HomeRoute()]);
-  }
-
-  void _onError(BuildContext context, LoginState state) {
-    final errorMessage = state.error?.message;
-
-    if (errorMessage == null) return;
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(tr(errorMessage)),
-        backgroundColor: context.colors.error,
-      ),
-    );
-  }
+  LoginCubit get _cubit => context.read<LoginCubit>();
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        LoginSuccessListener(listener: _onSuccess),
-        LoginFailureListener(listener: _onError),
+        BlocListener<LoginCubit, LoginState>(
+          listenWhen: (p, c) =>
+              p.status != c.status && c.status == LoginStatus.success,
+          listener: (context, state) =>
+              context.router.replaceAll([const HomeRoute()]),
+        ),
+        BlocListener<LoginCubit, LoginState>(
+          listenWhen: (p, c) =>
+              p.status != c.status && c.status == LoginStatus.failure,
+          listener: (context, state) {
+            final errorMessage = state.error?.message;
+            if (errorMessage == null) return;
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(tr(errorMessage)),
+                backgroundColor: context.colors.error,
+              ),
+            );
+          },
+        ),
       ],
       child: Scaffold(
-        body: Center(
+        body: Padding(
+          padding: const EdgeInsets.only(
+            top: 60, bottom: 20
+          ),
           child: Container(
-            constraints: BoxConstraints(maxWidth: 512),
+            constraints: const BoxConstraints(maxWidth: 512),
             padding: const EdgeInsets.all(24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: 16,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Container(
+                  width: 110,
+                  height: 110,
+                  decoration: BoxDecoration(
+                    color: Color(0xff005BBF),
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text(
-                    F.title,
+                    "Scholarly Editorial",
                     textAlign: TextAlign.center,
                     style: context.typographies.heading,
                   ),
                 ),
-                TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.person),
-                    hintText: tr(LocaleKeys.Username),
+                Text("Elevated education management"),
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.only(
+                      top: 20, bottom: 20, left: 15, right: 15),
+                  decoration: BoxDecoration(
+                    color: Color(0xffF2F3FD),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  onChanged: _onUsernameChanged,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.lock),
-                    hintText: tr(LocaleKeys.Password),
+                  child: Column(
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Tên đăng nhập"),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          TextField(
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: BorderSide.none,
+                              ),
+                              fillColor: Color(0xffE1E2EC),
+                              prefixIcon: const Icon(Icons.person),
+                              hintText: tr(LocaleKeys.Username),
+                            ),
+                            onChanged: _cubit.emailChanged,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text("Mật khẩu"),
+                              Spacer(),
+                              Text(
+                                "Quên mật khẩu?",
+                                style: TextStyle(
+                                  color: context.colors.primary,
+                                  fontSize: 14,
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          TextField(
+                            decoration: InputDecoration(
+                              fillColor: Color(0xffE1E2EC),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: BorderSide.none,
+                              ),
+                              prefixIcon: const Icon(Icons.lock),
+                              hintText: tr(LocaleKeys.Password),
+                            ),
+                            obscureText: true,
+                            onChanged: _cubit.passwordChanged,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      BlocBuilder<LoginCubit, LoginState>(
+                        buildWhen: (p, c) => p.status != c.status,
+                        builder: (context, state) {
+                          final isSubmitting =
+                              state.status == LoginStatus.submitting;
+                          return FilledButton(
+                            onPressed: isSubmitting ? null : _cubit.login,
+                            child: isSubmitting
+                                ? const AppFilledButtonLoadingIndicator()
+                                : Text(tr(LocaleKeys.Login)),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  obscureText: true,
-                  onChanged: _onPasswordChanged,
                 ),
-                LoginStatusSelector(builder: (status) {
-                  return FilledButton(
-                    onPressed: _onLoginPressed,
-                    child: status == LoginStatus.submitting
-                        ? const AppFilledButtonLoadingIndicator()
-                        : Text(tr(LocaleKeys.Login)),
-                  );
-                }),
+                const SizedBox(height: 16),
+                Text("Chưa có tài khoản ? Đăng ký ngay"),
+                Spacer(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Row(
+                    children: [
+                      Text("Điều khoản sử dụng"),
+                      Spacer(),
+                      Text("Trung tâm hỗ trợ")
+                    ],
+                  ),
+                )
               ],
             ),
           ),

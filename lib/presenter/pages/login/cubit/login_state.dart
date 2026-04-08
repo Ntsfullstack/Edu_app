@@ -16,7 +16,7 @@ class LoginState with _$LoginState {
   const factory LoginState({
     @Default(LoginStatus.initial) LoginStatus status,
     Account? account,
-    @Default('') String username,
+    @Default('') String email,
     @Default('') String password,
     BaseException? error,
   }) = _LoginState;

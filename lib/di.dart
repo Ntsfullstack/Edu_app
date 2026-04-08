@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_starter/data/states/auth/auth_bloc.dart';
-import 'package:flutter_starter/data/states/settings/settings_bloc.dart';
+import 'package:flutter_starter/data/states/auth/auth_cubit.dart';
+import 'package:flutter_starter/data/states/settings/settings_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
@@ -26,7 +26,7 @@ abstract class RegisterModule {
 
   @Named('baseUrl')
   @singleton
-  String get baseUrl => "https://example.com";
+  String get baseUrl => "http://14.225.231.56:3000/";
 }
 
 class GlobalBlocProviders extends StatelessWidget {
@@ -41,11 +41,11 @@ class GlobalBlocProviders extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthBloc>.value(
-          value: provider.get<AuthBloc>(),
+        BlocProvider<AuthCubit>.value(
+          value: provider.get<AuthCubit>(),
         ),
-        BlocProvider<SettingsBloc>.value(
-          value: provider.get<SettingsBloc>(),
+        BlocProvider<SettingsCubit>.value(
+          value: provider.get<SettingsCubit>(),
         ),
       ],
       child: child,

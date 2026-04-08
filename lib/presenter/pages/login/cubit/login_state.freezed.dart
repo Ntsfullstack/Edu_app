@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$LoginState {
   LoginStatus get status => throw _privateConstructorUsedError;
   Account? get account => throw _privateConstructorUsedError;
-  String get username => throw _privateConstructorUsedError;
+  String get email => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
   BaseException<dynamic>? get error => throw _privateConstructorUsedError;
 
@@ -38,7 +38,7 @@ abstract class $LoginStateCopyWith<$Res> {
   $Res call(
       {LoginStatus status,
       Account? account,
-      String username,
+      String email,
       String password,
       BaseException<dynamic>? error});
 
@@ -62,7 +62,7 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
   $Res call({
     Object? status = null,
     Object? account = freezed,
-    Object? username = null,
+    Object? email = null,
     Object? password = null,
     Object? error = freezed,
   }) {
@@ -75,9 +75,9 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
           ? _value.account
           : account // ignore: cast_nullable_to_non_nullable
               as Account?,
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String,
       password: null == password
           ? _value.password
@@ -116,7 +116,7 @@ abstract class _$$LoginStateImplCopyWith<$Res>
   $Res call(
       {LoginStatus status,
       Account? account,
-      String username,
+      String email,
       String password,
       BaseException<dynamic>? error});
 
@@ -139,7 +139,7 @@ class __$$LoginStateImplCopyWithImpl<$Res>
   $Res call({
     Object? status = null,
     Object? account = freezed,
-    Object? username = null,
+    Object? email = null,
     Object? password = null,
     Object? error = freezed,
   }) {
@@ -152,9 +152,9 @@ class __$$LoginStateImplCopyWithImpl<$Res>
           ? _value.account
           : account // ignore: cast_nullable_to_non_nullable
               as Account?,
-      username: null == username
-          ? _value.username
-          : username // ignore: cast_nullable_to_non_nullable
+      email: null == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
               as String,
       password: null == password
           ? _value.password
@@ -174,7 +174,7 @@ class _$LoginStateImpl implements _LoginState {
   const _$LoginStateImpl(
       {this.status = LoginStatus.initial,
       this.account,
-      this.username = '',
+      this.email = '',
       this.password = '',
       this.error});
 
@@ -185,7 +185,7 @@ class _$LoginStateImpl implements _LoginState {
   final Account? account;
   @override
   @JsonKey()
-  final String username;
+  final String email;
   @override
   @JsonKey()
   final String password;
@@ -194,7 +194,7 @@ class _$LoginStateImpl implements _LoginState {
 
   @override
   String toString() {
-    return 'LoginState(status: $status, account: $account, username: $username, password: $password, error: $error)';
+    return 'LoginState(status: $status, account: $account, email: $email, password: $password, error: $error)';
   }
 
   @override
@@ -204,8 +204,7 @@ class _$LoginStateImpl implements _LoginState {
             other is _$LoginStateImpl &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.account, account) || other.account == account) &&
-            (identical(other.username, username) ||
-                other.username == username) &&
+            (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
             (identical(other.error, error) || other.error == error));
@@ -213,7 +212,7 @@ class _$LoginStateImpl implements _LoginState {
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, status, account, username, password, error);
+      Object.hash(runtimeType, status, account, email, password, error);
 
   /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
@@ -228,7 +227,7 @@ abstract class _LoginState implements LoginState {
   const factory _LoginState(
       {final LoginStatus status,
       final Account? account,
-      final String username,
+      final String email,
       final String password,
       final BaseException<dynamic>? error}) = _$LoginStateImpl;
 
@@ -237,7 +236,7 @@ abstract class _LoginState implements LoginState {
   @override
   Account? get account;
   @override
-  String get username;
+  String get email;
   @override
   String get password;
   @override

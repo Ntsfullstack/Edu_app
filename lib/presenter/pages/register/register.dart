@@ -78,15 +78,22 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _buildHeader(context),
+                    const _RegisterHeader(),
                     const SizedBox(height: 32),
-                    _buildForm(context),
+                    _RegisterForm(
+                      onNameChanged: _onNameChanged,
+                      onEmailChanged: _onEmailChanged,
+                      onPasswordChanged: _cubit.passwordChanged,
+                      onConfirmPasswordChanged: _cubit.confirmPasswordChanged,
+                      onRoleChanged: _cubit.roleChanged,
+                      onRegister: _cubit.register,
+                    ),
                     const SizedBox(height: 24),
-                    _buildSubmitButton(context),
+                    const _SubmitButton(),
                     const SizedBox(height: 20),
-                    _buildSignInLink(context),
+                    const _SignInLink(),
                     const SizedBox(height: 32),
-                    _buildFooter(context),
+                    const _RegisterFooter(),
                   ],
                 ),
               ),
@@ -96,10 +103,15 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+}
 
-  // ── Header ───────────────────────────────────────────────────────────────
+// ── Components ────────────────────────────────────────────────────────────
 
-  Widget _buildHeader(BuildContext context) {
+class _RegisterHeader extends StatelessWidget {
+  const _RegisterHeader();
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -148,68 +160,74 @@ class _RegisterPageState extends State<RegisterPage> {
       ],
     );
   }
+}
 
-  // ── Form ─────────────────────────────────────────────────────────────────
+class _RegisterForm extends StatelessWidget {
+  final ValueChanged<String> onNameChanged;
+  final ValueChanged<String> onEmailChanged;
+  final ValueChanged<String> onPasswordChanged;
+  final ValueChanged<String> onConfirmPasswordChanged;
+  final ValueChanged<UserRole> onRoleChanged;
+  final VoidCallback onRegister;
 
-  Widget _buildForm(BuildContext context) {
+  const _RegisterForm({
+    required this.onNameChanged,
+    required this.onEmailChanged,
+    required this.onPasswordChanged,
+    required this.onConfirmPasswordChanged,
+    required this.onRoleChanged,
+    required this.onRegister,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildLabel('Full Name'),
+        const _Label('Full Name'),
         const SizedBox(height: 8),
         _buildTextField(
           hintText: 'Enter your full name',
           prefixIcon: Icons.person_outline_rounded,
-          onChanged: _onNameChanged,
+          onChanged: onNameChanged,
           textInputAction: TextInputAction.next,
         ),
         const SizedBox(height: 20),
-        _buildLabel('Email Address'),
+        const _Label('Email Address'),
         const SizedBox(height: 8),
         _buildTextField(
           hintText: 'example@scholar.edu',
           prefixIcon: Icons.mail_outline_rounded,
           keyboardType: TextInputType.emailAddress,
-          onChanged: _onEmailChanged,
+          onChanged: onEmailChanged,
           textInputAction: TextInputAction.next,
         ),
         const SizedBox(height: 20),
-        _buildLabel('Join as'),
+        const _Label('Join as'),
         const SizedBox(height: 12),
-        _buildRoleSelector(context),
+        _RoleSelector(onRoleChanged: onRoleChanged),
         const SizedBox(height: 20),
-        _buildLabel('Password'),
+        const _Label('Password'),
         const SizedBox(height: 8),
         _buildTextField(
           hintText: '••••••••',
           prefixIcon: Icons.lock_outline_rounded,
           obscureText: true,
-          onChanged: _onPasswordChanged,
+          onChanged: onPasswordChanged,
           textInputAction: TextInputAction.next,
         ),
         const SizedBox(height: 20),
-        _buildLabel('Confirm'),
+        const _Label('Confirm'),
         const SizedBox(height: 8),
         _buildTextField(
           hintText: '••••••••',
           prefixIcon: Icons.lock_reset_rounded,
           obscureText: true,
-          onChanged: _onConfirmPasswordChanged,
+          onChanged: onConfirmPasswordChanged,
           textInputAction: TextInputAction.done,
-          onSubmitted: (_) => _onRegisterPressed(),
+          onSubmitted: (_) => onRegister(),
         ),
       ],
-    );
-  }
-
-  Widget _buildLabel(String text) {
-    return Text(
-      text,
-      style: const TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-        color: Color(0xFF0D1B3E),
-      ),
     );
   }
 
@@ -267,10 +285,15 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+}
 
-  // ── Role Selector ─────────────────────────────────────────────────────────
+class _RoleSelector extends StatelessWidget {
+  final ValueChanged<UserRole> onRoleChanged;
 
-  Widget _buildRoleSelector(BuildContext context) {
+  const _RoleSelector({required this.onRoleChanged});
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<RegisterCubit, RegisterState>(
       buildWhen: (p, c) => p.selectedRole != c.selectedRole,
       builder: (context, state) {
@@ -282,23 +305,26 @@ class _RegisterPageState extends State<RegisterPage> {
             return _RoleChip(
               role: role,
               selected: selected,
-              onTap: () => _onRoleChanged(role),
+              onTap: () => onRoleChanged(role),
             );
           }).toList(),
         );
       },
     );
   }
+}
 
-  // ── Submit Button ─────────────────────────────────────────────────────────
+class _SubmitButton extends StatelessWidget {
+  const _SubmitButton();
 
-  Widget _buildSubmitButton(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<RegisterCubit, RegisterState>(
       buildWhen: (p, c) => p.status != c.status,
       builder: (context, state) {
         final isSubmitting = state.status == RegisterStatus.submitting;
         return FilledButton(
-          onPressed: isSubmitting ? null : _onRegisterPressed,
+          onPressed: isSubmitting ? null : context.read<RegisterCubit>().register,
           style: FilledButton.styleFrom(
             backgroundColor: const Color(0xFF1A6BFF),
             disabledBackgroundColor: const Color(0xFF1A6BFF).withOpacity(0.6),
@@ -331,10 +357,13 @@ class _RegisterPageState extends State<RegisterPage> {
       },
     );
   }
+}
 
-  // ── Sign In Link ──────────────────────────────────────────────────────────
+class _SignInLink extends StatelessWidget {
+  const _SignInLink();
 
-  Widget _buildSignInLink(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: RichText(
         text: TextSpan(
@@ -359,10 +388,13 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+}
 
-  // ── Footer ────────────────────────────────────────────────────────────────
+class _RegisterFooter extends StatelessWidget {
+  const _RegisterFooter();
 
-  Widget _buildFooter(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: RichText(
         textAlign: TextAlign.center,
@@ -402,7 +434,22 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 }
 
-// ── Role Chip Widget ──────────────────────────────────────────────────────────
+class _Label extends StatelessWidget {
+  final String text;
+  const _Label(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: Color(0xFF0D1B3E),
+      ),
+    );
+  }
+}
 
 class _RoleChip extends StatelessWidget {
   final UserRole role;

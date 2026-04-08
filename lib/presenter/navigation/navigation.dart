@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter_starter/data/states/auth/auth_bloc.dart';
+import 'package:flutter_starter/data/states/auth/auth_cubit.dart';
 import 'package:flutter_starter/presenter/pages/home/home.dart';
 import 'package:flutter_starter/presenter/pages/login/login.dart';
 import 'package:flutter_starter/presenter/pages/register/register.dart';
@@ -11,10 +11,10 @@ part 'navigation.gr.dart';
 @singleton
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
 class AppRouter extends RootStackRouter {
-  final AuthBloc _authBloc;
+  final AuthCubit _authBloc;
 
   AppRouter({
-    required AuthBloc authBloc,
+    required AuthCubit authBloc,
   }) : _authBloc = authBloc;
 
   @override

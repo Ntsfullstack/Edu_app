@@ -5,19 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_starter/di.dart';
 import 'package:flutter_starter/presenter/navigation/navigation.dart';
-import 'package:flutter_starter/presenter/pages/splash/splash_bloc.dart';
-import 'package:flutter_starter/presenter/pages/splash/splash_event.dart';
-import 'package:flutter_starter/presenter/pages/splash/splash_selector.dart';
-import 'package:flutter_starter/presenter/pages/splash/splash_state.dart';
+import 'package:flutter_starter/presenter/pages/splash/cubit/splash_cubit.dart';
+import 'package:flutter_starter/presenter/pages/splash/cubit/splash_state.dart';
 
 @RoutePage()
 class SplashPage extends StatefulWidget implements AutoRouteWrapper {
-  const SplashPage();
+  const SplashPage({super.key});
 
   @override
   Widget wrappedRoute(BuildContext context) {
-    return BlocProvider(
-      create: (ctx) => provider.get<SplashBloc>(),
+    return BlocProvider<SplashCubit>(
+      create: (ctx) => provider.get<SplashCubit>(),
       child: this,
     );
   }
@@ -27,14 +25,13 @@ class SplashPage extends StatefulWidget implements AutoRouteWrapper {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  SplashBloc get _bloc => context.read<SplashBloc>();
+  SplashCubit get _cubit => context.read<SplashCubit>();
 
   @override
   void initState() {
     super.initState();
-
     scheduleMicrotask(() {
-      _bloc.add(const SplashVerifyLoginStatusStarted());
+      _cubit.checkLoginStatus();
     });
   }
 
@@ -48,14 +45,41 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        SplashVerifySuccessListener(listener: _onSuccess),
-        SplashVerifyFailureListener(listener: _onError),
-      ],
-      child: const Scaffold(
+    return BlocListener<SplashCubit, SplashState>(
+      listenWhen: (p, c) => p.status != c.status,
+      listener: (context, state) {
+        if (state.status == SplashStatus.success) {
+          _onSuccess(context, state);
+        } else if (state.status == SplashStatus.failure) {
+          _onError(context, state);
+        }
+      },
+      child: Scaffold(
         body: Center(
-          child: CircularProgressIndicator(),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container (
+                width: 100,
+                height: 100,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.blue,
+                ),
+                child: const Icon(
+                  Icons.flutter_dash,
+                  color: Colors.white,
+                  size: 48,
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+
+              const Text('Checking login status...'),
+
+            ],
+          )
         ),
       ),
     );

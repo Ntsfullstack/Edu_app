@@ -17,8 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SplashState {
   SplashStatus get status => throw _privateConstructorUsedError;
-  Account? get account => throw _privateConstructorUsedError;
-  BaseException<dynamic>? get error => throw _privateConstructorUsedError;
 
   /// Create a copy of SplashState
   /// with the given fields replaced by the non-null parameter values.
@@ -33,10 +31,7 @@ abstract class $SplashStateCopyWith<$Res> {
           SplashState value, $Res Function(SplashState) then) =
       _$SplashStateCopyWithImpl<$Res, SplashState>;
   @useResult
-  $Res call(
-      {SplashStatus status, Account? account, BaseException<dynamic>? error});
-
-  $AccountCopyWith<$Res>? get account;
+  $Res call({SplashStatus status});
 }
 
 /// @nodoc
@@ -55,37 +50,13 @@ class _$SplashStateCopyWithImpl<$Res, $Val extends SplashState>
   @override
   $Res call({
     Object? status = null,
-    Object? account = freezed,
-    Object? error = freezed,
   }) {
     return _then(_value.copyWith(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as SplashStatus,
-      account: freezed == account
-          ? _value.account
-          : account // ignore: cast_nullable_to_non_nullable
-              as Account?,
-      error: freezed == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as BaseException<dynamic>?,
     ) as $Val);
-  }
-
-  /// Create a copy of SplashState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AccountCopyWith<$Res>? get account {
-    if (_value.account == null) {
-      return null;
-    }
-
-    return $AccountCopyWith<$Res>(_value.account!, (value) {
-      return _then(_value.copyWith(account: value) as $Val);
-    });
   }
 }
 
@@ -97,11 +68,7 @@ abstract class _$$SplashStateImplCopyWith<$Res>
       __$$SplashStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {SplashStatus status, Account? account, BaseException<dynamic>? error});
-
-  @override
-  $AccountCopyWith<$Res>? get account;
+  $Res call({SplashStatus status});
 }
 
 /// @nodoc
@@ -118,22 +85,12 @@ class __$$SplashStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? status = null,
-    Object? account = freezed,
-    Object? error = freezed,
   }) {
     return _then(_$SplashStateImpl(
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as SplashStatus,
-      account: freezed == account
-          ? _value.account
-          : account // ignore: cast_nullable_to_non_nullable
-              as Account?,
-      error: freezed == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as BaseException<dynamic>?,
     ));
   }
 }
@@ -141,20 +98,15 @@ class __$$SplashStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SplashStateImpl implements _SplashState {
-  const _$SplashStateImpl(
-      {this.status = SplashStatus.loading, this.account, this.error});
+  const _$SplashStateImpl({this.status = SplashStatus.initial});
 
   @override
   @JsonKey()
   final SplashStatus status;
-  @override
-  final Account? account;
-  @override
-  final BaseException<dynamic>? error;
 
   @override
   String toString() {
-    return 'SplashState(status: $status, account: $account, error: $error)';
+    return 'SplashState(status: $status)';
   }
 
   @override
@@ -162,13 +114,11 @@ class _$SplashStateImpl implements _SplashState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SplashStateImpl &&
-            (identical(other.status, status) || other.status == status) &&
-            (identical(other.account, account) || other.account == account) &&
-            (identical(other.error, error) || other.error == error));
+            (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, account, error);
+  int get hashCode => Object.hash(runtimeType, status);
 
   /// Create a copy of SplashState
   /// with the given fields replaced by the non-null parameter values.
@@ -180,17 +130,10 @@ class _$SplashStateImpl implements _SplashState {
 }
 
 abstract class _SplashState implements SplashState {
-  const factory _SplashState(
-      {final SplashStatus status,
-      final Account? account,
-      final BaseException<dynamic>? error}) = _$SplashStateImpl;
+  const factory _SplashState({final SplashStatus status}) = _$SplashStateImpl;
 
   @override
   SplashStatus get status;
-  @override
-  Account? get account;
-  @override
-  BaseException<dynamic>? get error;
 
   /// Create a copy of SplashState
   /// with the given fields replaced by the non-null parameter values.

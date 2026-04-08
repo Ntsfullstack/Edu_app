@@ -6,7 +6,7 @@ abstract class AuthRepository {
   Future<Account> verifyLoginStatus();
 
   Future<Account> login({
-    required String username,
+    required String email,
     required String password,
   });
 

@@ -7,14 +7,18 @@ import 'package:flutter_starter/data/entities/response/register_response.dart';
 import 'package:flutter_starter/data/repositories/auth_repository/auth_repository.dart';
 import 'package:flutter_starter/data/repositories/auth_repository/exceptions.dart';
 import 'package:flutter_starter/data/sources/network/network.dart';
+import 'package:flutter_starter/services/oauth_token_manager/oauth_token_manager.dart';
 
 @Singleton(as: AuthRepository)
 class DefaultAuthRepository extends AuthRepository {
   final NetworkDataSource _networkDataSource;
+  final OauthTokenManager _oauthTokenManager;
 
   DefaultAuthRepository({
     required NetworkDataSource networkDataSource,
-  }) : _networkDataSource = networkDataSource;
+    required OauthTokenManager oauthTokenManager,
+  })  : _networkDataSource = networkDataSource,
+        _oauthTokenManager = oauthTokenManager;
 
   @override
   Future<Account> verifyLoginStatus() async {
@@ -27,16 +31,18 @@ class DefaultAuthRepository extends AuthRepository {
 
   @override
   Future<Account> login({
-    required String username,
+    required String email,
     required String password,
   }) async {
     try {
-      final account = await _networkDataSource.login(LoginParams(
-        username: username,
+      final response = await _networkDataSource.login(LoginParams(
+        email: email,
         password: password,
       ));
 
-      return account;
+      await _oauthTokenManager.saveAccessToken(response.accessToken);
+
+      return response.user;
     } on DioException {
       throw LoginInvalidEmailPasswordException();
     }
