@@ -3,6 +3,8 @@ import 'package:flutter_starter/data/repositories/auth_repository/exceptions.dar
 import 'package:flutter_starter/data/states/auth/auth_cubit.dart';
 import 'package:flutter_starter/presenter/pages/login/cubit/login_cubit.dart';
 import 'package:flutter_starter/presenter/pages/login/cubit/login_state.dart';
+import 'package:flutter_starter/presenter/pages/splash/cubit/splash_cubit.dart';
+import 'package:flutter_starter/presenter/pages/splash/cubit/splash_state.dart';
 
 class AppBlocObserver extends BlocObserver {
   final AuthCubit _authCubit;
@@ -15,6 +17,10 @@ class AppBlocObserver extends BlocObserver {
 
     if (bloc is LoginCubit && change is Change<LoginState>) {
       _onLoginCubitChanged(bloc, change);
+    }
+
+    if (bloc is SplashCubit && change is Change<SplashState>) {
+      _onSplashCubitChanged(bloc, change);
     }
   }
 
@@ -29,6 +35,13 @@ class AppBlocObserver extends BlocObserver {
 
   void _onLoginCubitChanged(LoginCubit bloc, Change<LoginState> change) {
     if (change.nextState.status == LoginStatus.success &&
+        change.nextState.account != null) {
+      _authCubit.loggedIn(change.nextState.account!);
+    }
+  }
+
+  void _onSplashCubitChanged(SplashCubit bloc, Change<SplashState> change) {
+    if (change.nextState.status == SplashStatus.success &&
         change.nextState.account != null) {
       _authCubit.loggedIn(change.nextState.account!);
     }

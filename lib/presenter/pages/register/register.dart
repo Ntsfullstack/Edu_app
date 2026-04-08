@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_starter/di.dart';
+import 'package:flutter_starter/data/entities/user_role.dart';
 import 'package:flutter_starter/presenter/navigation/navigation.dart';
 import 'package:flutter_starter/presenter/pages/register/cubit/register_cubit.dart';
 import 'package:flutter_starter/presenter/pages/register/cubit/register_state.dart';
@@ -161,7 +162,6 @@ class _RegisterHeader extends StatelessWidget {
     );
   }
 }
-
 class _RegisterForm extends StatelessWidget {
   final ValueChanged<String> onNameChanged;
   final ValueChanged<String> onEmailChanged;
@@ -465,11 +465,13 @@ class _RoleChip extends StatelessWidget {
   IconData get _icon {
     switch (role) {
       case UserRole.teacher:
-        return Icons.cast_for_education_rounded;
+        return Icons.school;
+      case UserRole.student:
+        return Icons.person;
       case UserRole.parent:
-        return Icons.family_restroom_rounded;
+        return Icons.family_restroom;
       case UserRole.admin:
-        return Icons.manage_accounts_rounded;
+        return Icons.admin_panel_settings;
     }
   }
 

@@ -36,7 +36,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void _onSuccess(BuildContext context, SplashState state) {
-    context.router.replaceAll([const HomeRoute()]);
+    context.router.replaceAll([const MainRoute()]);
   }
 
   void _onError(BuildContext context, SplashState state) {

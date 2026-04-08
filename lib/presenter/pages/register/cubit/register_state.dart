@@ -1,4 +1,5 @@
 import 'package:flutter_starter/core/exception.dart';
+import 'package:flutter_starter/data/entities/user_role.dart';
 import 'package:flutter_starter/data/entities/response/register_response.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -11,33 +12,7 @@ enum RegisterStatus {
   failure,
 }
 
-enum UserRole {
-  teacher,
-  parent,
-  admin;
-
-  String get value {
-    switch (this) {
-      case UserRole.teacher:
-        return 'teacher';
-      case UserRole.parent:
-        return 'parent';
-      case UserRole.admin:
-        return 'admin';
-    }
-  }
-
-  String get label {
-    switch (this) {
-      case UserRole.teacher:
-        return 'Teacher';
-      case UserRole.parent:
-        return 'Parent';
-      case UserRole.admin:
-        return 'Admin';
-    }
-  }
-}
+// Removed local UserRole enum as it's now global in user_role.dart
 
 @freezed
 class RegisterState with _$RegisterState {

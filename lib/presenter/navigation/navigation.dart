@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter_starter/data/states/auth/auth_cubit.dart';
 import 'package:flutter_starter/presenter/pages/home/home.dart';
 import 'package:flutter_starter/presenter/pages/login/login.dart';
+import 'package:flutter_starter/presenter/pages/main/main_page.dart';
 import 'package:flutter_starter/presenter/pages/register/register.dart';
 import 'package:flutter_starter/presenter/pages/splash/splash.dart';
 import 'package:injectable/injectable.dart';
@@ -22,7 +23,16 @@ class AppRouter extends RootStackRouter {
         AutoRoute(path: '/', page: SplashRoute.page),
         AutoRoute(path: '/login', page: LoginRoute.page),
         AutoRoute(path: '/register', page: RegisterRoute.page),
-        AutoRoute(path: '/home', page: HomeRoute.page),
+        AutoRoute(
+          path: '/dashboard',
+          page: MainRoute.page,
+          children: [
+            AutoRoute(path: 'home', page: HomeRoute.page),
+            AutoRoute(path: 'schedule', page: ScheduleRoute.page),
+            AutoRoute(path: 'notifications', page: NotificationsRoute.page),
+            AutoRoute(path: 'settings', page: SettingsRoute.page),
+          ],
+        ),
       ];
 
   bool isUnauthorizedRoute(String routeName) => [
@@ -31,7 +41,11 @@ class AppRouter extends RootStackRouter {
       ].contains(routeName);
 
   bool isAuthorizedRoute(String routeName) => [
+        MainRoute.name,
         HomeRoute.name,
+        ScheduleRoute.name,
+        NotificationsRoute.name,
+        SettingsRoute.name,
       ].contains(routeName);
 
   @override
@@ -45,7 +59,7 @@ class AppRouter extends RootStackRouter {
             }
 
             if (isUnauthorizedRoute(resolver.routeName) && isAuthenticated) {
-              return resolver.redirect(HomeRoute(), replace: true);
+              return resolver.redirect(MainRoute(), replace: true);
             }
 
             resolver.next(true);

@@ -23,7 +23,12 @@ mixin _$Account {
   String get id => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  UserRole get role => throw _privateConstructorUsedError;
+  bool get isActive => throw _privateConstructorUsedError;
   String? get avatar => throw _privateConstructorUsedError;
+  String? get createdAt => throw _privateConstructorUsedError;
+  String? get updatedAt => throw _privateConstructorUsedError;
+  String? get activeStudentId => throw _privateConstructorUsedError;
 
   /// Serializes this Account to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +44,16 @@ abstract class $AccountCopyWith<$Res> {
   factory $AccountCopyWith(Account value, $Res Function(Account) then) =
       _$AccountCopyWithImpl<$Res, Account>;
   @useResult
-  $Res call({String id, String email, String name, String? avatar});
+  $Res call(
+      {String id,
+      String email,
+      String name,
+      UserRole role,
+      bool isActive,
+      String? avatar,
+      String? createdAt,
+      String? updatedAt,
+      String? activeStudentId});
 }
 
 /// @nodoc
@@ -60,7 +74,12 @@ class _$AccountCopyWithImpl<$Res, $Val extends Account>
     Object? id = null,
     Object? email = null,
     Object? name = null,
+    Object? role = null,
+    Object? isActive = null,
     Object? avatar = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? activeStudentId = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -75,9 +94,29 @@ class _$AccountCopyWithImpl<$Res, $Val extends Account>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as UserRole,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+      activeStudentId: freezed == activeStudentId
+          ? _value.activeStudentId
+          : activeStudentId // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -90,7 +129,16 @@ abstract class _$$AccountImplCopyWith<$Res> implements $AccountCopyWith<$Res> {
       __$$AccountImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String email, String name, String? avatar});
+  $Res call(
+      {String id,
+      String email,
+      String name,
+      UserRole role,
+      bool isActive,
+      String? avatar,
+      String? createdAt,
+      String? updatedAt,
+      String? activeStudentId});
 }
 
 /// @nodoc
@@ -109,7 +157,12 @@ class __$$AccountImplCopyWithImpl<$Res>
     Object? id = null,
     Object? email = null,
     Object? name = null,
+    Object? role = null,
+    Object? isActive = null,
     Object? avatar = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
+    Object? activeStudentId = freezed,
   }) {
     return _then(_$AccountImpl(
       id: null == id
@@ -124,9 +177,29 @@ class __$$AccountImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      role: null == role
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
+              as UserRole,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
       avatar: freezed == avatar
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
+              as String?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as String?,
+      activeStudentId: freezed == activeStudentId
+          ? _value.activeStudentId
+          : activeStudentId // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -134,9 +207,17 @@ class __$$AccountImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$AccountImpl with DiagnosticableTreeMixin implements _Account {
+class _$AccountImpl implements _Account {
   const _$AccountImpl(
-      {required this.id, required this.email, required this.name, this.avatar});
+      {required this.id,
+      required this.email,
+      required this.name,
+      required this.role,
+      this.isActive = true,
+      this.avatar,
+      this.createdAt,
+      this.updatedAt,
+      this.activeStudentId});
 
   factory _$AccountImpl.fromJson(Map<String, dynamic> json) =>
       _$$AccountImplFromJson(json);
@@ -148,22 +229,22 @@ class _$AccountImpl with DiagnosticableTreeMixin implements _Account {
   @override
   final String name;
   @override
+  final UserRole role;
+  @override
+  @JsonKey()
+  final bool isActive;
+  @override
   final String? avatar;
+  @override
+  final String? createdAt;
+  @override
+  final String? updatedAt;
+  @override
+  final String? activeStudentId;
 
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Account(id: $id, email: $email, name: $name, avatar: $avatar)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'Account'))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('email', email))
-      ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('avatar', avatar));
+  String toString() {
+    return 'Account(id: $id, email: $email, name: $name, role: $role, isActive: $isActive, avatar: $avatar, createdAt: $createdAt, updatedAt: $updatedAt, activeStudentId: $activeStudentId)';
   }
 
   @override
@@ -174,12 +255,22 @@ class _$AccountImpl with DiagnosticableTreeMixin implements _Account {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar));
+            (identical(other.role, role) || other.role == role) &&
+            (identical(other.isActive, isActive) ||
+                other.isActive == isActive) &&
+            (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
+            (identical(other.activeStudentId, activeStudentId) ||
+                other.activeStudentId == activeStudentId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, email, name, avatar);
+  int get hashCode => Object.hash(runtimeType, id, email, name, role, isActive,
+      avatar, createdAt, updatedAt, activeStudentId);
 
   /// Create a copy of Account
   /// with the given fields replaced by the non-null parameter values.
@@ -202,7 +293,12 @@ abstract class _Account implements Account {
       {required final String id,
       required final String email,
       required final String name,
-      final String? avatar}) = _$AccountImpl;
+      required final UserRole role,
+      final bool isActive,
+      final String? avatar,
+      final String? createdAt,
+      final String? updatedAt,
+      final String? activeStudentId}) = _$AccountImpl;
 
   factory _Account.fromJson(Map<String, dynamic> json) = _$AccountImpl.fromJson;
 
@@ -213,7 +309,17 @@ abstract class _Account implements Account {
   @override
   String get name;
   @override
+  UserRole get role;
+  @override
+  bool get isActive;
+  @override
   String? get avatar;
+  @override
+  String? get createdAt;
+  @override
+  String? get updatedAt;
+  @override
+  String? get activeStudentId;
 
   /// Create a copy of Account
   /// with the given fields replaced by the non-null parameter values.

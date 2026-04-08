@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
           listenWhen: (p, c) =>
               p.status != c.status && c.status == LoginStatus.success,
           listener: (context, state) =>
-              context.router.replaceAll([const HomeRoute()]),
+              context.router.replaceAll([const MainRoute()]),
         ),
         BlocListener<LoginCubit, LoginState>(
           listenWhen: (p, c) =>

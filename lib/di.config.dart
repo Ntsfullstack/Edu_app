@@ -78,7 +78,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i9.RegisterCubit>(
         () => _i9.RegisterCubit(register: gh<_i686.RegisterUseCase>()));
     gh.factory<_i588.SplashCubit>(() => _i588.SplashCubit(
-        verifyLoginStatus: gh<_i412.VerifyLoginStatusUseCase>()));
+          verifyLoginStatus: gh<_i412.VerifyLoginStatusUseCase>(),
+          authCubit: gh<_i823.AuthCubit>(),
+        ));
     gh.factory<_i0.LoginCubit>(
         () => _i0.LoginCubit(login: gh<_i470.LoginUseCase>()));
     return this;

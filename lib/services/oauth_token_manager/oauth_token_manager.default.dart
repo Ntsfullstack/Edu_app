@@ -32,7 +32,9 @@ class DefaultOauthTokenManager extends OauthTokenManager {
 
   @override
   Future<String?> getAccessToken() async {
-    return _storage.read(key: _accessTokenKey).onError((_, __) => null);
+    final token = await _storage.read(key: _accessTokenKey).onError((e, s) => null);
+    print("OauthTokenManager: Reading Access Token: ${token != null ? 'EXISTS' : 'NULL'}");
+    return token;
   }
 
   @override
@@ -42,6 +44,7 @@ class DefaultOauthTokenManager extends OauthTokenManager {
 
   @override
   Future<void> saveAccessToken(String? token) {
+    print("OauthTokenManager: Saving Access Token: ${token != null ? 'EXISTS' : 'NULL'}");
     return _storage.write(key: _accessTokenKey, value: token);
   }
 

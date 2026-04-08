@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter_starter/core/exception.dart';
+import 'package:flutter_starter/data/entities/user_role.dart';
 import 'package:flutter_starter/data/usecases/register.dart';
 import 'package:flutter_starter/presenter/pages/register/cubit/register_state.dart';
 
@@ -53,7 +54,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         name: state.name,
         email: state.email,
         password: state.password,
-        role: state.selectedRole.value,
+        role: state.selectedRole.name,
       ));
 
       emit(state.copyWith(

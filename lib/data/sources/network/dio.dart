@@ -6,6 +6,8 @@ import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:flutter_starter/services/oauth_token_manager/oauth_token_manager.dart';
 
+import '../../repositories/auth_repository/exceptions.dart';
+
 @singleton
 class NetworkDio extends DioForNative implements Interceptor {
   final OauthTokenManager _tokenManager;
@@ -27,16 +29,24 @@ class NetworkDio extends DioForNative implements Interceptor {
 
     final instance = NetworkDio._(tokenManager, options);
 
-    instance.interceptors.add(instance);
+    instance.interceptors.addAll([
+      instance,
+      LogInterceptor(
+        requestBody: true,
+        responseBody: true,
+      ),
+    ]);
 
     return instance;
   }
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    return handler.next(options.copyWith(
-      headers: await _tokenManager.getAuthenticatedHeaders(options.headers),
-    ));
+    final authenticatedHeaders = await _tokenManager.getAuthenticatedHeaders(options.headers);
+    if (authenticatedHeaders != null) {
+      options.headers = authenticatedHeaders;
+    }
+    return handler.next(options);
   }
 
   @override
@@ -68,10 +78,10 @@ class NetworkDio extends DioForNative implements Interceptor {
     // TODO: Refreshing the token when it expires
 
     // TODO: Removing access token after logging out
-    // if (err.response?.statusCode == 401 || responseData['messageCode'] == UnauthorizedException.messageCode) {
-    //   await _tokenManager.removeAllTokens();
-    //   return handler.next(UnauthorizedException(data: err.response?.data));
-    // }
+    if (err.response?.statusCode == 401) {
+      await _tokenManager.removeAllTokens();
+      return handler.next(UnauthorizedException());
+    }
 
     // TODO: Handling global exception, such as maintainance, etc.
 
