@@ -1,80 +1,244 @@
-# 📘 Hướng dẫn Chi tiết Triển khai Tính năng Register
+# 📘 Register Feature — Technical Documentation
 
-Tài liệu này liệt kê chính xác các file cần **tạo mới** và **chỉnh sửa** để hoàn thiện tính năng Register theo mô hình Clean Architecture.
-
----
-
-## 1. Tầng Dữ liệu (Data Layer)
-
-### 1.1. [NEW] `lib/data/entities/request/register_params.dart`
-- **Nhiệm vụ:** Định nghĩa Request Body gửi lên API.
-- **Chi tiết:** Sử dụng `@freezed` để khớp với contract: `{ "email", "password", "name", "role" }`.
-
-### 1.2. [NEW] `lib/data/entities/response/register_response.dart`
-- **Nhiệm vụ:** Định nghĩa Response sau khi đăng ký.
-- **Chi tiết:** Khớp các trường trả về: `{ "id", "email", "name", "role" }`.
-
-### 1.3. [MODIFY] `lib/data/sources/network/network.dart`
-- **Nhiệm vụ:** Khai báo Endpoint API bằng Retrofit.
-- **Thay đổi:** Thêm `@POST('/auth/register')` vào interface `NetworkDataSource`.
-
-### 1.4. [MODIFY] `lib/data/repositories/auth_repository/auth_repository.dart`
-- **Nhiệm vụ:** Thêm phương thức vào Interface Repository.
-- **Thay đổi:** Khai báo `Future<RegisterResponse> register({required RegisterParams params});`.
-
-### 1.5. [MODIFY] `lib/data/repositories/auth_repository/auth_repository.default.dart`
-- **Nhiệm vụ:** Triển khai (Implement) logic gọi API thực tế.
-- **Thay đổi:** Gọi `_networkDataSource.register(params)` và handle lỗi `DioException`.
-
-### 1.6. [MODIFY] `lib/data/repositories/auth_repository/exceptions.dart`
-- **Nhiệm vụ:** Định nghĩa các lỗi liên quan đến Auth.
-- **Thay đổi:** Thêm `RegisterFailedException` và `EmailAlreadyExistsException`.
+**App:** Scholar Slate  
+**Date:** 2026-03-29  
+**Architecture:** Clean Architecture + SOLID  
+**State Management:** flutter_bloc (Cubit)
 
 ---
 
-## 2. Tầng Nghiệp vụ (Domain Layer)
+## 1. Tổng quan
 
-### 2.1. [NEW] `lib/data/usecases/register.dart`
-- **Nhiệm vụ:** Đóng gói logic đăng ký thành một UseCase độc lập.
-- **Chi tiết:** Kế thừa `UseCase` class, sử dụng `@singleton`. Nhận các trường dữ liệu và gọi repository.
+Feature Register cho phép người dùng (Teacher / Parent / Admin) tạo tài khoản Scholar Slate. Toàn bộ feature được xây dựng theo **Clean Architecture** phân tầng rõ ràng:
 
----
-
-## 3. Tầng Quản lý Trạng thái (Presenter Layer - BLoC/Cubit)
-
-### 3.1. [MODIFY] `lib/presenter/pages/register/cubit/register_state.dart`
-- **Nhiệm vụ:** Lưu trữ trạng thái giao diện.
-- **Thay đổi:** Thêm các trường form (`name`, `email`, `password`, `confirmPassword`) và enums (`UserRole`, `RegisterStatus`).
-
-### 3.2. [MODIFY] `lib/presenter/pages/register/cubit/register_cubit.dart`
-- **Nhiệm vụ:** Xử lý logic và phát (emit) state mới.
-- **Thay đổi:** Viết các hàm `nameChanged`, `register()`, và xử lý validate mật khẩu trùng khớp.
+```
+UI (RegisterPage)
+  └─► RegisterCubit       ← presenter / state
+        └─► RegisterUseCase   ← domain
+              └─► AuthRepository ← domain (abstract)
+                    └─► DefaultAuthRepository ← data (implementation)
+                          └─► NetworkDataSource  ← retrofit + dio
+```
 
 ---
 
-## 4. Tầng Giao diện (Presentation Layer)
+## 2. File Map
 
-### 4.1. [MODIFY] `lib/presenter/pages/register/register.dart`
-- **Nhiệm vụ:** Xây dựng UI chuẩn theo thiết kế Scholar Slate.
-- **Thay đổi:** 
-  - Triển khai `AutoRouteWrapper` để cung cấp Cubit.
-  - Sử dụng `BlocListener` để điều hướng trang khi thành công.
-  - Xây dựng form với Role Chips (Teacher/Parent/Admin).
+| Layer | File | Vai trò |
+|---|---|---|
+| **Entity** | `data/entities/request/register_params.dart` | Request body gửi lên API |
+| **Entity** | `data/entities/response/register_response.dart` | Response trả về từ API |
+| **Network** | `data/sources/network/network.dart` | Retrofit interface — endpoint `/register` |
+| **Network** | `data/sources/network/dio.dart` | `NetworkDio` — interceptor (auth header, error mapping) |
+| **Repository** | `data/repositories/auth_repository/auth_repository.dart` | Abstract contract |
+| **Repository** | `data/repositories/auth_repository/auth_repository.default.dart` | Implementation với DI `@Singleton` |
+| **Repository** | `data/repositories/auth_repository/exceptions.dart` | Domain exceptions |
+| **UseCase** | `data/usecases/register.dart` | `RegisterUseCase` — @singleton |
+| **State** | `presenter/pages/register/cubit/register_state.dart` | Freezed state + `UserRole`, `RegisterStatus` enums |
+| **Cubit** | `presenter/pages/register/cubit/register_cubit.dart` | Business logic — @injectable |
+| **UI** | `presenter/pages/register/register.dart` | `RegisterPage` — @RoutePage |
+| **Navigation** | `presenter/navigation/navigation.dart` | Route `/register` |
 
 ---
 
-## 5. Cấu hình Hệ thống
+## 3. Design Patterns & Principles
 
-### 5.1. [MODIFY] `lib/presenter/navigation/navigation.dart`
-- **Nhiệm vụ:** Đăng ký Route cho trang Register.
-- **Thay đổi:** Thêm `RegisterRoute` vào danh sách routes của `AppRouter`.
+### 3.1 SOLID
+| Principle | Áp dụng |
+|---|---|
+| **S** — Single Responsibility | Mỗi class có 1 nhiệm vụ: UseCase gọi repo, Cubit gọi UseCase, UI lắng nghe Cubit |
+| **O** — Open/Closed | Thêm endpoint mới không sửa Cubit; thêm role mới không sửa UseCase |
+| **L** — Liskov | `DefaultAuthRepository` thay thế được `AuthRepository` abstract |
+| **I** — Interface Segregation | `AuthRepository` chỉ expose các method cần thiết |
+| **D** — Dependency Inversion | Tất cả depend vào abstraction, không depend implementation cụ thể |
+
+### 3.2 Clean Architecture Layers
+```
+Presenter   →  RegisterPage, RegisterCubit, RegisterState
+Domain      →  RegisterUseCase, AuthRepository (abstract)
+Data        →  DefaultAuthRepository, NetworkDataSource, RegisterParams/Response
+```
+
+### 3.3 Injectable / Singleton Pattern
+```dart
+// Singleton — 1 instance duy nhất trong app
+@singleton
+class RegisterUseCase extends UseCase<RegisterResponse, RegisterUseCaseParams> { ... }
+
+// Injectable — tạo instance mới mỗi lần BlocProvider tạo
+@injectable
+class RegisterCubit extends Cubit<RegisterState> { ... }
+
+// Singleton as interface — DI bind implementation vào abstract
+@Singleton(as: AuthRepository)
+class DefaultAuthRepository extends AuthRepository { ... }
+```
+
+### 3.4 Freezed — Immutable State
+```dart
+@freezed
+class RegisterState with _$RegisterState {
+  const factory RegisterState({
+    @Default('') String fullName,
+    @Default('') String email,
+    @Default('') String password,
+    @Default('') String confirmPassword,
+    @Default(UserRole.teacher) UserRole selectedRole,
+    @Default(RegisterStatus.initial) RegisterStatus status,
+    RegisterResponse? registerResponse,
+    BaseException? error,
+  }) = _RegisterState;
+}
+```
 
 ---
 
-## 6. Lệnh Thực thi (Codegen)
-Sau khi tạo/sửa các file trên, bạn **BẮT BUỘC** phải chạy lệnh sau:
+## 4. Generic Response Wrappers
+
+Đã cấu hình 2 generic wrapper để xử lý các pattern trả về phổ biến của API:
+
+### 4.1 `PaginatedResponse<T>`
+Dùng cho các endpoint danh sách có phân trang.
+```dart
+@GET('/items')
+Future<PaginatedResponse<ItemDto>> getItems(@Queries() Map<String, dynamic> queries);
+```
+
+### 4.2 `BaseResponse<T>`
+Dùng cho các endpoint trả về object đơn lẻ được bọc trong lớp `data`.
+```dart
+@POST('/profile')
+Future<BaseResponse<UserDto>> getProfile();
+```
+
+---
+
+## 5. API Contract
+
+### Endpoint
+```
+POST /register
+Content-Type: application/json
+```
+
+### Request Body (`RegisterParams`)
+```json
+{
+  "full_name": "Nguyen Van A",
+  "email": "a@scholar.edu",
+  "password": "secret123",
+  "role": "teacher"   // "teacher" | "parent" | "admin"
+}
+```
+
+### Response Body (`RegisterResponse`)
+```json
+{
+  "id": "abc123",
+  "email": "a@scholar.edu",
+  "full_name": "Nguyen Van A",
+  "role": "teacher",
+  "access_token": "eyJ..."   // optional
+}
+```
+
+### HTTP Error Mapping
+| HTTP Status | Exception | Message |
+|---|---|---|
+| 409 | `EmailAlreadyExistsException` | Email đã được đăng ký |
+| 4xx / 5xx | `RegisterFailedException` | Lỗi không xác định |
+| Network | `NetworkException` | Không có kết nối mạng (handled by `NetworkDio`) |
+
+---
+
+## 5. State Transitions
+
+```
+initial
+  │
+  ▼ user presses "Create Account"
+[validation — local]
+  ├─► password != confirmPassword → failure (không gọi API)
+  │
+  ▼
+submitting  (loading spinner hiển thị)
+  │
+  ├─► API success → success → navigate to HomeRoute
+  │
+  └─► API error  → failure  → SnackBar với error message
+```
+
+---
+
+## 6. Cubit Methods
+
+| Method | Trigger | Action |
+|---|---|---|
+| `fullNameChanged(String)` | TextField onChanged | emit state mới với fullName |
+| `emailChanged(String)` | TextField onChanged | emit state mới với email |
+| `passwordChanged(String)` | TextField onChanged | emit state mới với password |
+| `confirmPasswordChanged(String)` | TextField onChanged | emit state mới với confirmPassword |
+| `roleChanged(UserRole)` | Role chip tap | emit state mới với selectedRole |
+| `register()` | Submit button press | validate → call UseCase → emit success/failure |
+
+---
+
+## 7. UI Components
+
+### Register Page (`RegisterPage`)
+- `@RoutePage()` + `AutoRouteWrapper` → inject `RegisterCubit` qua `BlocProvider`
+- `MultiBlocListener` — lắng nghe `success` → navigate, `failure` → SnackBar
+- `BlocBuilder<RegisterCubit, RegisterState>` với `buildWhen` cho:
+  - Role selector (chỉ rebuild khi `selectedRole` thay đổi)
+  - Submit button (chỉ rebuild khi `status` thay đổi)
+
+### `_RoleChip` Widget
+- `AnimatedContainer` với `duration: 200ms` cho smooth selection animation
+- Border + background color thay đổi theo `selected` state
+- Icon theo role: 🎓 Teacher · 👨‍👩‍👦 Parent · ⚙️ Admin
+
+---
+
+## 8. Code Generation
+
+Chạy sau khi thêm/sửa freezed models hoặc retrofit endpoints:
 
 ```bash
+cd /path/to/flutter_bloc_base-main
 dart run build_runner build --delete-conflicting-outputs
 ```
-Lệnh này sẽ tự động sinh mã cho Freezed, Retrofit, Injectable và AutoRoute.
+
+Các file được sinh tự động:
+- `register_params.freezed.dart` + `register_params.g.dart`
+- `register_response.freezed.dart` + `register_response.g.dart`
+- `register_state.freezed.dart`
+- `network.g.dart` (cập nhật thêm method `register()`)
+- `navigation.gr.dart` (cập nhật thêm `RegisterRoute`)
+
+---
+
+## 9. Navigation
+
+```
+/           → SplashRoute    (kiểm tra auth)
+/login      → LoginRoute     (unauthorized)
+/register   → RegisterRoute  (unauthorized — redirect home nếu đã đăng nhập)
+/home       → HomeRoute      (authorized — redirect login nếu chưa đăng nhập)
+```
+
+Từ `RegisterPage`, người dùng có thể:
+- ✅ Đăng ký thành công → `replaceAll([HomeRoute()])`
+- ↩️ Đã có tài khoản → `replaceAll([LoginRoute()])`
+
+---
+
+## 10. Dependency Graph
+
+```
+GetIt (provider)
+├── NetworkDio               @singleton (interceptor)
+├── NetworkDataSource        @singleton (retrofit)
+├── DefaultAuthRepository    @Singleton(as: AuthRepository)
+├── RegisterUseCase          @singleton
+└── RegisterCubit            @injectable (per-page)
+```
