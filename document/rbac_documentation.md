@@ -16,13 +16,16 @@ if (role.isTeacher) {
 }
 ```
 
-## 2. Cấu trúc Giao diện Modular (Role-Specific Views)
-Để tránh việc file code quá dài và khó quản lý, từng màn hình của từng Role được tách thành các file riêng biệt trong thư mục `widgets/`.
+Để tránh việc file code quá dài và khó quản lý, từng màn hình của từng Role được tách thành các file **StatefulWidget** riêng biệt trong thư mục `widgets/`.
+
+### Tại sao các View con cũng là StatefulWidget?
+- Để mỗi View có thể quản lý trạng thái riêng (ví dụ: ScrollController, Animation) mà không phụ thuộc vào trang cha.
+- Tối ưu hóa việc rebuild: Khi một View thay đổi trạng thái, chỉ View đó build lại chứ không phải toàn bộ Dashboard.
 
 ### Thư mục mẫu (`lib/presenter/pages/home/widgets/`):
-- `teacher_home_view.dart`: Giao diện riêng cho Giáo viên.
-- `student_home_view.dart`: Giao diện riêng cho Học sinh.
-- `parent_home_view.dart`: Giao diện riêng cho Phụ huynh.
+- `teacher_home_view.dart`: Giao diện riêng cho Giáo viên (Stateful).
+- `student_home_view.dart`: Giao diện riêng cho Học sinh (Stateful).
+- `parent_home_view.dart`: Giao diện riêng cho Phụ huynh (Stateful).
 
 ## 3. Lớp Vỏ bọc (Stateful Wrappers)
 Các trang chính (`HomePage`, `SchedulePage`,...) được thiết kế là **StatefulWidget**.

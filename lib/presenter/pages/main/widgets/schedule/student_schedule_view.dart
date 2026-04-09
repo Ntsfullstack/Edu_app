@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
-class StudentScheduleView extends StatelessWidget {
+class StudentScheduleView extends StatefulWidget {
   const StudentScheduleView({super.key});
 
+  @override
+  State<StudentScheduleView> createState() => _StudentScheduleViewState();
+}
+
+class _StudentScheduleViewState extends State<StudentScheduleView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

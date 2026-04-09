@@ -16,6 +16,9 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'data/repositories/auth_repository/auth_repository.dart' as _i344;
 import 'data/repositories/auth_repository/auth_repository.default.dart'
     as _i522;
+import 'data/repositories/teacher_repository/teacher_repository.dart' as _i402;
+import 'data/repositories/teacher_repository/teacher_repository.default.dart'
+    as _i349;
 import 'data/sources/local/local.dart' as _i193;
 import 'data/sources/network/dio.dart' as _i288;
 import 'data/sources/network/network.dart' as _i536;
@@ -23,9 +26,11 @@ import 'data/states/auth/auth_cubit.dart' as _i823;
 import 'data/states/settings/settings_cubit.dart' as _i906;
 import 'data/usecases/login.dart' as _i470;
 import 'data/usecases/register.dart' as _i686;
+import 'data/usecases/teacher/get_today_schedules.dart' as _i1008;
 import 'data/usecases/verify_login_status.dart' as _i412;
 import 'di.dart' as _i913;
 import 'presenter/navigation/navigation.dart' as _i551;
+import 'presenter/pages/home/cubit/teacher_home_cubit.dart' as _i317;
 import 'presenter/pages/login/cubit/login_cubit.dart' as _i0;
 import 'presenter/pages/register/cubit/register_cubit.dart' as _i9;
 import 'presenter/pages/splash/cubit/splash_cubit.dart' as _i588;
@@ -77,12 +82,18 @@ extension GetItInjectableX on _i174.GetIt {
         _i686.RegisterUseCase(authRepository: gh<_i344.AuthRepository>()));
     gh.factory<_i9.RegisterCubit>(
         () => _i9.RegisterCubit(register: gh<_i686.RegisterUseCase>()));
+    gh.lazySingleton<_i402.TeacherRepository>(
+        () => _i349.DefaultTeacherRepository(gh<_i536.NetworkDataSource>()));
     gh.factory<_i588.SplashCubit>(() => _i588.SplashCubit(
           verifyLoginStatus: gh<_i412.VerifyLoginStatusUseCase>(),
           authCubit: gh<_i823.AuthCubit>(),
         ));
+    gh.factory<_i1008.GetTodaySchedulesUseCase>(
+        () => _i1008.GetTodaySchedulesUseCase(gh<_i402.TeacherRepository>()));
     gh.factory<_i0.LoginCubit>(
         () => _i0.LoginCubit(login: gh<_i470.LoginUseCase>()));
+    gh.factory<_i317.TeacherHomeCubit>(
+        () => _i317.TeacherHomeCubit(gh<_i1008.GetTodaySchedulesUseCase>()));
     return this;
   }
 }

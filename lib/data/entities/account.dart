@@ -6,6 +6,7 @@ part 'account.g.dart';
 
 @freezed
 class Account with _$Account {
+  @JsonSerializable(fieldRename: FieldRename.none)
   const factory Account({
     required String id,
     required String email,

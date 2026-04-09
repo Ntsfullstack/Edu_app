@@ -2,28 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_starter/data/states/auth/auth_cubit.dart';
 import 'package:flutter_starter/presenter/themes/extensions.dart';
+import 'package:flutter_starter/presenter/pages/home/cubit/teacher_home_cubit.dart';
+import 'package:flutter_starter/presenter/pages/home/state/teacher_home_state.dart';
+import 'package:flutter_starter/di.dart';
+import 'package:flutter_starter/data/entities/schedule.dart';
 
-class TeacherHomeView extends StatelessWidget {
+class TeacherHomeView extends StatefulWidget {
   const TeacherHomeView({super.key});
+
+  @override
+  State<TeacherHomeView> createState() => _TeacherHomeViewState();
+}
+
+class _TeacherHomeViewState extends State<TeacherHomeView> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => provider.get<TeacherHomeCubit>()..loadTodaySchedules(),
+      child: const _TeacherHomeContent(),
+    );
+  }
+}
+
+class _TeacherHomeContent extends StatelessWidget {
+  const _TeacherHomeContent();
 
   @override
   Widget build(BuildContext context) {
     final account = context.watch<AuthCubit>().state.account;
+    
     return Scaffold(
       backgroundColor: const Color(0xffF8FAFF),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 120.0,
+            expandedHeight: 90.0,
             floating: false,
             pinned: true,
             backgroundColor: const Color(0xff005BBF),
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
-                'Teacher Dashboard',
+                'Chào buổi sáng, ${account?.name}',
                 style: context.typographies.heading.copyWith(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: 14,
                 ),
               ),
               centerTitle: false,
@@ -36,13 +58,219 @@ class TeacherHomeView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Welcome, Prof. ${account?.name}', style: context.typographies.heading.copyWith(fontSize: 24)),
+                  // Thông báo mới
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Thông báo mới'),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Bạn có 3 thông báo chưa đọc.',
+                          style: context.typographies.body,
+                        ),
+                      ],
+                    ),
+                  ),
+                  
+                  // Chỉ số lớp và học sinh
                   const SizedBox(height: 24),
-                  // Add Teacher specific widgets here
+                  Row(
+                    children: [
+                      _StatCard(
+                        icon: Icons.add,
+                        value: '10',
+                        label: 'Lớp học đang quản lý',
+                      ),
+                      const SizedBox(width: 16),
+                      _StatCard(
+                        icon: Icons.person,
+                        value: '10',
+                        label: 'học sinh đang quản lý',
+                      ),
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 32),
+                  Row(
+                    children: [
+                      Text(
+                        "Lịch dạy hôm nay", 
+                        style: context.typographies.heading.copyWith(fontSize: 16),
+                      ),
+                      const Spacer(),
+                      Text(
+                        "Xem tất cả",
+                        style: context.typographies.caption.copyWith(color: const Color(0xff005BBF)),
+                      )
+                    ],
+                  ),
+                  
+                  const SizedBox(height: 16),
+                  
+                  // Danh sách lịch dạy dùng BlocBuilder
+                  BlocBuilder<TeacherHomeCubit, TeacherHomeState>(
+                    builder: (context, state) {
+                      if (state.isLoading) {
+                        return const Center(child: Padding(
+                          padding: EdgeInsets.all(24.0),
+                          child: CircularProgressIndicator(),
+                        ));
+                      }
+                      
+                      if (state.error != null) {
+                        return Center(child: Text(state.error!.message));
+                      }
+                      
+                      if (state.todaySchedules.isEmpty) {
+                        return const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(24.0),
+                            child: Text('Hôm nay bạn không có lịch dạy nào.'),
+                          ),
+                        );
+                      }
+                      
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: state.todaySchedules.length,
+                        separatorBuilder: (_, __) => const SizedBox(height: 12),
+                        itemBuilder: (context, index) {
+                          final schedule = state.todaySchedules[index];
+                          return _ScheduleItem(schedule: schedule);
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatCard extends StatelessWidget {
+  final IconData icon;
+  final String value;
+  final String label;
+
+  const _StatCard({required this.icon, required this.value, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 32, color: const Color(0xff005BBF)),
+            const SizedBox(height: 12),
+            Text(value, style: context.typographies.heading.copyWith(fontSize: 20)),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: context.typographies.caption,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ScheduleItem extends StatelessWidget {
+  final Schedule schedule;
+
+  const _ScheduleItem({required this.schedule});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xffEEEEEE)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: const Color(0xff005BBF).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              children: [
+                Text(
+                  schedule.shift.startTime.substring(0, 5),
+                  style: context.typographies.heading.copyWith(fontSize: 14, color: const Color(0xff005BBF)),
+                ),
+                Text(
+                  'đến',
+                  style: context.typographies.caption.copyWith(fontSize: 10),
+                ),
+                Text(
+                  schedule.shift.endTime.substring(0, 5),
+                  style: context.typographies.heading.copyWith(fontSize: 14, color: const Color(0xff005BBF)),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  schedule.classEntity.name,
+                  style: context.typographies.heading.copyWith(fontSize: 16),
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    const Icon(Icons.access_time, size: 14, color: Colors.grey),
+                    const SizedBox(width: 4),
+                    Text(
+                      schedule.shift.name,
+                      style: context.typographies.caption,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const Icon(Icons.chevron_right, color: Colors.grey),
         ],
       ),
     );

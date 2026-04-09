@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_starter/data/states/auth/auth_cubit.dart';
-import 'package:flutter_starter/presenter/themes/extensions.dart';
 
-class StudentHomeView extends StatelessWidget {
+class StudentHomeView extends StatefulWidget {
   const StudentHomeView({super.key});
 
+  @override
+  State<StudentHomeView> createState() => _StudentHomeViewState();
+}
+
+class _StudentHomeViewState extends State<StudentHomeView> {
   @override
   Widget build(BuildContext context) {
     final account = context.watch<AuthCubit>().state.account;

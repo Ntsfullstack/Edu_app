@@ -12,11 +12,11 @@ _$AccountImpl _$$AccountImplFromJson(Map<String, dynamic> json) =>
       email: json['email'] as String,
       name: json['name'] as String,
       role: $enumDecode(_$UserRoleEnumMap, json['role']),
-      isActive: json['is_active'] as bool? ?? true,
+      isActive: json['isActive'] as bool? ?? true,
       avatar: json['avatar'] as String?,
-      createdAt: json['created_at'] as String?,
-      updatedAt: json['updated_at'] as String?,
-      activeStudentId: json['active_student_id'] as String?,
+      createdAt: json['createdAt'] as String?,
+      updatedAt: json['updatedAt'] as String?,
+      activeStudentId: json['activeStudentId'] as String?,
     );
 
 Map<String, dynamic> _$$AccountImplToJson(_$AccountImpl instance) =>
@@ -25,11 +25,11 @@ Map<String, dynamic> _$$AccountImplToJson(_$AccountImpl instance) =>
       'email': instance.email,
       'name': instance.name,
       'role': _$UserRoleEnumMap[instance.role]!,
-      'is_active': instance.isActive,
+      'isActive': instance.isActive,
       'avatar': instance.avatar,
-      'created_at': instance.createdAt,
-      'updated_at': instance.updatedAt,
-      'active_student_id': instance.activeStudentId,
+      'createdAt': instance.createdAt,
+      'updatedAt': instance.updatedAt,
+      'activeStudentId': instance.activeStudentId,
     };
 
 const _$UserRoleEnumMap = {

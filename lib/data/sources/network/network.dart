@@ -8,6 +8,8 @@ import 'package:retrofit/retrofit.dart';
 import 'package:flutter_starter/data/entities/account.dart';
 import 'package:flutter_starter/data/sources/network/dio.dart';
 
+import 'package:flutter_starter/data/entities/schedule.dart';
+
 part 'network.g.dart';
 
 @singleton
@@ -24,4 +26,7 @@ abstract class NetworkDataSource {
 
   @POST('/auth/register')
   Future<RegisterResponse> register(@Body() RegisterParams params);
+
+  @GET('/schedules/teacher/today')
+  Future<List<Schedule>> getTodaySchedules();
 }
