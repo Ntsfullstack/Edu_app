@@ -35,7 +35,7 @@ class _MainPageState extends State<MainPage> {
 
     final routes = [
       const HomeRoute(),
-      if (role.isTeacher || role.isStudent) const ScheduleRoute(),
+      if (role.isTeacher || role.isParent) const ScheduleRoute(),
       if (role.isTeacher || role.isParent) const NotificationsRoute(),
       const SettingsRoute(),
     ];
@@ -46,7 +46,7 @@ class _MainPageState extends State<MainPage> {
         selectedIcon: Icon(Icons.home, color: Color(0xff005BBF)),
         label: 'Trang chủ',
       ),
-      if (role.isTeacher || role.isStudent)
+      if (role.isTeacher || role.isParent)
         const NavigationDestination(
           icon: Icon(Icons.book),
           selectedIcon: Icon(Icons.calendar_today, color: Color(0xff005BBF)),

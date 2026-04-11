@@ -26,8 +26,6 @@ class RoleSelector extends StatelessWidget {
     switch (role) {
       case UserRole.teacher:
         return teacher ?? fallback ?? const SizedBox.shrink();
-      case UserRole.student:
-        return student ?? fallback ?? const SizedBox.shrink();
       case UserRole.parent:
         return parent ?? fallback ?? const SizedBox.shrink();
       case UserRole.admin:
@@ -50,9 +48,6 @@ extension UserRoleX on BuildContext {
     switch (role) {
       case UserRole.teacher:
         teacher?.call();
-        break;
-      case UserRole.student:
-        student?.call();
         break;
       case UserRole.parent:
         parent?.call();

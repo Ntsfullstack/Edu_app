@@ -10,7 +10,7 @@ import 'package:flutter_starter/presenter/pages/login/cubit/login_cubit.dart';
 import 'package:flutter_starter/presenter/pages/login/cubit/login_state.dart';
 import 'package:flutter_starter/presenter/themes/extensions.dart';
 import 'package:flutter_starter/presenter/widgets/loading_indicator.dart';
-
+import 'package:flutter/gestures.dart';
 @RoutePage()
 class LoginPage extends StatefulWidget implements AutoRouteWrapper {
   const LoginPage({super.key});
@@ -174,7 +174,24 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text("Chưa có tài khoản ? Đăng ký ngay"),
+                Text.rich(
+                  TextSpan(
+                    text: "Chưa có tài khoản? ",
+                    children: [
+                      TextSpan(
+                        text: "Đăng ký ngay",
+                        style: TextStyle(
+                          color: context.colors.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            context.router.push(const RegisterRoute());
+                          },
+                      ),
+                    ],
+                  ),
+                ),
                 Spacer(),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15.0),

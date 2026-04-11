@@ -143,25 +143,26 @@ class _RegisterHeader extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         Text(
-          'Create your account',
+          'Đăng ký tài khoản',
           style: context.typographies.heading.copyWith(
             fontSize: 26,
             fontWeight: FontWeight.w800,
             color: const Color(0xFF0D1B3E),
           ),
         ),
-        const SizedBox(height: 8),
-        Text(
-          'Start your journey with the modern editorial\nstandard in education.',
-          style: context.typographies.body.copyWith(
-            color: const Color(0xFF6B7A9A),
-            height: 1.5,
-          ),
-        ),
+        // const SizedBox(height: 8),
+        // Text(
+        //   'Start your journey with the modern editorial\nstandard in education.',
+        //   style: context.typographies.body.copyWith(
+        //     color: const Color(0xFF6B7A9A),
+        //     height: 1.5,
+        //   ),
+        // ),
       ],
     );
   }
 }
+
 class _RegisterForm extends StatelessWidget {
   final ValueChanged<String> onNameChanged;
   final ValueChanged<String> onEmailChanged;
@@ -184,30 +185,30 @@ class _RegisterForm extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const _Label('Full Name'),
+        const _Label('Họ và tên'),
         const SizedBox(height: 8),
         _buildTextField(
-          hintText: 'Enter your full name',
+          hintText: 'Họ và tên',
           prefixIcon: Icons.person_outline_rounded,
           onChanged: onNameChanged,
           textInputAction: TextInputAction.next,
         ),
         const SizedBox(height: 20),
-        const _Label('Email Address'),
+        const _Label('Địa chỉ email'),
         const SizedBox(height: 8),
         _buildTextField(
-          hintText: 'example@scholar.edu',
+          hintText: 'example@gmail.com',
           prefixIcon: Icons.mail_outline_rounded,
           keyboardType: TextInputType.emailAddress,
           onChanged: onEmailChanged,
           textInputAction: TextInputAction.next,
         ),
+        // const SizedBox(height: 20),
+        // const _Label('Loại tài khoản'),
+        // const SizedBox(height: 12),
+        // _RoleSelector(onRoleChanged: onRoleChanged),
         const SizedBox(height: 20),
-        const _Label('Join as'),
-        const SizedBox(height: 12),
-        _RoleSelector(onRoleChanged: onRoleChanged),
-        const SizedBox(height: 20),
-        const _Label('Password'),
+        const _Label('Mật khẩu'),
         const SizedBox(height: 8),
         _buildTextField(
           hintText: '••••••••',
@@ -217,7 +218,7 @@ class _RegisterForm extends StatelessWidget {
           textInputAction: TextInputAction.next,
         ),
         const SizedBox(height: 20),
-        const _Label('Confirm'),
+        const _Label('Nhập lại mật khẩu'),
         const SizedBox(height: 8),
         _buildTextField(
           hintText: '••••••••',
@@ -300,7 +301,9 @@ class _RoleSelector extends StatelessWidget {
         return Wrap(
           spacing: 10,
           runSpacing: 10,
-          children: UserRole.values.map((role) {
+          children: UserRole.values
+              .where((role) => role != UserRole.admin && role != UserRole.student)
+              .map((role) {
             final selected = state.selectedRole == role;
             return _RoleChip(
               role: role,
@@ -324,7 +327,8 @@ class _SubmitButton extends StatelessWidget {
       builder: (context, state) {
         final isSubmitting = state.status == RegisterStatus.submitting;
         return FilledButton(
-          onPressed: isSubmitting ? null : context.read<RegisterCubit>().register,
+          onPressed:
+              isSubmitting ? null : context.read<RegisterCubit>().register,
           style: FilledButton.styleFrom(
             backgroundColor: const Color(0xFF1A6BFF),
             disabledBackgroundColor: const Color(0xFF1A6BFF).withOpacity(0.6),
@@ -340,7 +344,7 @@ class _SubmitButton extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     Text(
-                      'Create Account',
+                      'Tạo tài khoản',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
@@ -367,14 +371,14 @@ class _SignInLink extends StatelessWidget {
     return Center(
       child: RichText(
         text: TextSpan(
-          text: 'Already have an account? ',
+          text: 'Đã có tài khoản ? ',
           style: const TextStyle(
             color: Color(0xFF6B7A9A),
             fontSize: 13.5,
           ),
           children: [
             TextSpan(
-              text: 'Sign in to Scholar Slate',
+              text: 'Đăng nhập ngay',
               style: const TextStyle(
                 color: Color(0xFF1A6BFF),
                 fontWeight: FontWeight.w600,
@@ -405,18 +409,18 @@ class _RegisterFooter extends StatelessWidget {
             height: 1.6,
           ),
           children: [
-            const TextSpan(text: 'By creating an account, you agree to our '),
+            const TextSpan(text: 'Bằng cách tạo tài khoản, bạn đồng ý với '),
             TextSpan(
-              text: 'Terms of Service',
+              text: 'Điều khoản',
               style: const TextStyle(
                 decoration: TextDecoration.underline,
                 color: Color(0xFF8A96B0),
               ),
               recognizer: TapGestureRecognizer()..onTap = () {},
             ),
-            const TextSpan(text: ' and '),
+            const TextSpan(text: ' và '),
             TextSpan(
-              text: 'Privacy Policy',
+              text: 'Chính sách bảo mật',
               style: const TextStyle(
                 decoration: TextDecoration.underline,
                 color: Color(0xFF8A96B0),
@@ -425,7 +429,7 @@ class _RegisterFooter extends StatelessWidget {
             ),
             const TextSpan(
               text:
-                  '. Scholar Slate uses cookies for a better professional experience.',
+                  '. Scholar Slate sử dụng dữ liệu cá nhân nhằm tăng trải nghiệm người dùng',
             ),
           ],
         ),
@@ -489,9 +493,7 @@ class _RoleChip extends StatelessWidget {
               : const Color(0xFFEEF1F8),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: selected
-                ? const Color(0xFF1A6BFF)
-                : const Color(0xFFD8DEF0),
+            color: selected ? const Color(0xFF1A6BFF) : const Color(0xFFD8DEF0),
             width: selected ? 1.5 : 1.0,
           ),
         ),
@@ -501,17 +503,15 @@ class _RoleChip extends StatelessWidget {
             Icon(
               _icon,
               size: 18,
-              color: selected
-                  ? const Color(0xFF1A6BFF)
-                  : const Color(0xFF8A96B0),
+              color:
+                  selected ? const Color(0xFF1A6BFF) : const Color(0xFF8A96B0),
             ),
             const SizedBox(width: 6),
             Text(
               role.label,
               style: TextStyle(
                 fontSize: 14,
-                fontWeight:
-                    selected ? FontWeight.w700 : FontWeight.w500,
+                fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                 color: selected
                     ? const Color(0xFF1A6BFF)
                     : const Color(0xFF4A5568),
