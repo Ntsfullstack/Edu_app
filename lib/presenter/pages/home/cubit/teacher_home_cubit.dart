@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:flutter_starter/data/usecases/teacher/get_today_schedules.dart';
@@ -22,8 +23,12 @@ class TeacherHomeCubit extends Cubit<TeacherHomeState> {
         todaySchedules: schedules,
       ));
     } catch (e, stackTrace) {
-      print('TeacherHomeCubit Error: $e');
-      print(stackTrace);
+      if (kDebugMode) {
+        print('TeacherHomeCubit Error: $e');
+      }
+      if (kDebugMode) {
+        print(stackTrace);
+      }
       emit(state.copyWith(
         isLoading: false,
         error: BaseException.from(e),

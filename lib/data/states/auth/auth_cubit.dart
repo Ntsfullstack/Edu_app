@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_starter/data/states/auth/auth_state.dart';
 import 'package:flutter_starter/data/entities/account.dart';
 import 'package:flutter_starter/core/exception.dart';
+import 'package:flutter_starter/data/repositories/auth_repository/auth_repository.dart';
 
 @singleton
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(const AuthState());
+  final AuthRepository _authRepository;
+
+  AuthCubit(this._authRepository) : super(const AuthState());
 
   void loggedIn(Account account) {
     emit(state.copyWith(
@@ -15,7 +18,8 @@ class AuthCubit extends Cubit<AuthState> {
     ));
   }
 
-  void loggedOut([BaseException? error]) {
+  Future<void> loggedOut([BaseException? error]) async {
+    await _authRepository.logout();
     emit(state.copyWith(
       account: null,
       error: error,

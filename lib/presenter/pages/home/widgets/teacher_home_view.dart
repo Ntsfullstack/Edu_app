@@ -7,6 +7,8 @@ import 'package:flutter_starter/presenter/pages/home/state/teacher_home_state.da
 import 'package:flutter_starter/di.dart';
 import 'package:flutter_starter/data/entities/schedule.dart';
 
+import '../component/schedule_item.dart';
+
 class TeacherHomeView extends StatefulWidget {
   const TeacherHomeView({super.key});
 
@@ -18,7 +20,8 @@ class _TeacherHomeViewState extends State<TeacherHomeView> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => provider.get<TeacherHomeCubit>()..loadTodaySchedules(),
+      create: (context) =>
+          provider.get<TeacherHomeCubit>()..loadTodaySchedules(),
       child: const _TeacherHomeContent(),
     );
   }
@@ -30,7 +33,7 @@ class _TeacherHomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final account = context.watch<AuthCubit>().state.account;
-    
+
     return Scaffold(
       backgroundColor: const Color(0xffF8FAFF),
       body: CustomScrollView(
@@ -49,7 +52,8 @@ class _TeacherHomeContent extends StatelessWidget {
                 ),
               ),
               centerTitle: false,
-              titlePadding: const EdgeInsetsDirectional.only(start: 24, bottom: 16),
+              titlePadding:
+                  const EdgeInsetsDirectional.only(start: 24, bottom: 16),
             ),
           ),
           SliverToBoxAdapter(
@@ -85,7 +89,7 @@ class _TeacherHomeContent extends StatelessWidget {
                       ],
                     ),
                   ),
-                  
+
                   // Chỉ số lớp và học sinh
                   const SizedBox(height: 24),
                   Row(
@@ -103,38 +107,42 @@ class _TeacherHomeContent extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
+
                   const SizedBox(height: 32),
                   Row(
                     children: [
                       Text(
-                        "Lịch dạy hôm nay", 
-                        style: context.typographies.heading.copyWith(fontSize: 16),
+                        "Lịch dạy hôm nay",
+                        style:
+                            context.typographies.heading.copyWith(fontSize: 16),
                       ),
                       const Spacer(),
                       Text(
                         "Xem tất cả",
-                        style: context.typographies.caption.copyWith(color: const Color(0xff005BBF)),
+                        style: context.typographies.caption
+                            .copyWith(color: const Color(0xff005BBF)),
                       )
                     ],
                   ),
-                  
+
                   const SizedBox(height: 16),
-                  
+
                   // Danh sách lịch dạy dùng BlocBuilder
                   BlocBuilder<TeacherHomeCubit, TeacherHomeState>(
                     builder: (context, state) {
                       if (state.isLoading) {
-                        return const Center(child: Padding(
-                          padding: EdgeInsets.all(24.0),
+                        return const Center(
+                            child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
                           child: CircularProgressIndicator(),
                         ));
                       }
-                      
+
                       if (state.error != null) {
                         return Center(child: Text(state.error!.message));
                       }
-                      
+
                       if (state.todaySchedules.isEmpty) {
                         return const Center(
                           child: Padding(
@@ -143,7 +151,6 @@ class _TeacherHomeContent extends StatelessWidget {
                           ),
                         );
                       }
-                      
                       return ListView.separated(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -151,10 +158,26 @@ class _TeacherHomeContent extends StatelessWidget {
                         separatorBuilder: (_, __) => const SizedBox(height: 12),
                         itemBuilder: (context, index) {
                           final schedule = state.todaySchedules[index];
-                          return _ScheduleItem(schedule: schedule);
+                          return ScheduleItem(schedule: schedule);
                         },
                       );
                     },
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Text(
+                        "Bài tập đã giao",
+                        style:
+                        context.typographies.heading.copyWith(fontSize: 16),
+                      ),
+                      const Spacer(),
+                      Text(
+                        "Xem tất cả",
+                        style: context.typographies.caption
+                            .copyWith(color: const Color(0xff005BBF)),
+                      )
+                    ],
                   ),
                 ],
               ),
@@ -171,7 +194,8 @@ class _StatCard extends StatelessWidget {
   final String value;
   final String label;
 
-  const _StatCard({required this.icon, required this.value, required this.label});
+  const _StatCard(
+      {required this.icon, required this.value, required this.label});
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +218,8 @@ class _StatCard extends StatelessWidget {
           children: [
             Icon(icon, size: 32, color: const Color(0xff005BBF)),
             const SizedBox(height: 12),
-            Text(value, style: context.typographies.heading.copyWith(fontSize: 20)),
+            Text(value,
+                style: context.typographies.heading.copyWith(fontSize: 20)),
             const SizedBox(height: 4),
             Text(
               label,
@@ -203,75 +228,6 @@ class _StatCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _ScheduleItem extends StatelessWidget {
-  final Schedule schedule;
-
-  const _ScheduleItem({required this.schedule});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xffEEEEEE)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: const Color(0xff005BBF).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Column(
-              children: [
-                Text(
-                  schedule.shift.startTime.substring(0, 5),
-                  style: context.typographies.heading.copyWith(fontSize: 14, color: const Color(0xff005BBF)),
-                ),
-                Text(
-                  'đến',
-                  style: context.typographies.caption.copyWith(fontSize: 10),
-                ),
-                Text(
-                  schedule.shift.endTime.substring(0, 5),
-                  style: context.typographies.heading.copyWith(fontSize: 14, color: const Color(0xff005BBF)),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  schedule.classEntity.name,
-                  style: context.typographies.heading.copyWith(fontSize: 16),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    const Icon(Icons.access_time, size: 14, color: Colors.grey),
-                    const SizedBox(width: 4),
-                    Text(
-                      schedule.shift.name,
-                      style: context.typographies.caption,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          const Icon(Icons.chevron_right, color: Colors.grey),
-        ],
       ),
     );
   }

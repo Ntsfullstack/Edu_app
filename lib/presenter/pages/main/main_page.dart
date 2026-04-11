@@ -6,8 +6,7 @@ import 'package:flutter_starter/data/states/auth/auth_cubit.dart';
 import 'package:flutter_starter/presenter/navigation/navigation.dart';
 import 'package:flutter_starter/presenter/pages/main/widgets/notifications/parent_alerts_view.dart';
 import 'package:flutter_starter/presenter/pages/main/widgets/notifications/teacher_alerts_view.dart';
-import 'package:flutter_starter/presenter/pages/main/widgets/schedule/student_schedule_view.dart';
-import 'package:flutter_starter/presenter/pages/main/widgets/schedule/teacher_schedule_view.dart';
+
 import 'package:flutter_starter/presenter/widgets/role_selector.dart';
 
 @RoutePage()
@@ -21,7 +20,18 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
-    final role = context.watch<AuthCubit>().state.account?.role ?? UserRole.student;
+    final authState = context.watch<AuthCubit>().state;
+    final account = authState.account;
+
+    // If not logged in, show a simple loader to avoid building a complex dashboard with null data
+    // This prevents crashes during the logout transition.
+    if (!authState.loggedIn || account == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    
+    final role = account.role;
 
     final routes = [
       const HomeRoute(),
@@ -34,19 +44,19 @@ class _MainPageState extends State<MainPage> {
       const NavigationDestination(
         icon: Icon(Icons.home_outlined),
         selectedIcon: Icon(Icons.home, color: Color(0xff005BBF)),
-        label: 'Home',
+        label: 'Trang chủ',
       ),
       if (role.isTeacher || role.isStudent)
         const NavigationDestination(
-          icon: Icon(Icons.calendar_today_outlined),
+          icon: Icon(Icons.book),
           selectedIcon: Icon(Icons.calendar_today, color: Color(0xff005BBF)),
-          label: 'Schedule',
+          label: 'Bài tập',
         ),
       if (role.isTeacher || role.isParent)
         const NavigationDestination(
-          icon: Icon(Icons.notifications_outlined),
-          selectedIcon: Icon(Icons.notifications, color: Color(0xff005BBF)),
-          label: 'Alerts',
+          icon: Icon(Icons.calendar_today),
+          selectedIcon: Icon(Icons.calendar_today_outlined, color: Color(0xff005BBF)),
+          label: 'lịch dạy',
         ),
       const NavigationDestination(
         icon: Icon(Icons.person_outline),
@@ -79,25 +89,6 @@ class _MainPageState extends State<MainPage> {
           ),
         );
       },
-    );
-  }
-}
-
-@RoutePage()
-class SchedulePage extends StatefulWidget {
-  const SchedulePage({super.key});
-
-  @override
-  State<SchedulePage> createState() => _SchedulePageState();
-}
-
-class _SchedulePageState extends State<SchedulePage> {
-  @override
-  Widget build(BuildContext context) {
-    return const RoleSelector(
-      teacher: TeacherScheduleView(),
-      student: StudentScheduleView(),
-      fallback: Center(child: Text('No schedule available for this role')),
     );
   }
 }

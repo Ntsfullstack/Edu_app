@@ -13,4 +13,6 @@ abstract class AuthRepository {
   Future<RegisterResponse> register({
     required RegisterParams params,
   });
+
+  Future<void> logout();
 }

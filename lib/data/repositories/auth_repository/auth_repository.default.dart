@@ -62,4 +62,9 @@ class DefaultAuthRepository extends AuthRepository {
       throw RegisterFailedException();
     }
   }
+
+  @override
+  Future<void> logout() async {
+    await _oauthTokenManager.removeAllTokens();
+  }
 }

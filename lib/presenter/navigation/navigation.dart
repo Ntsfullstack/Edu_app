@@ -4,6 +4,7 @@ import 'package:flutter_starter/presenter/pages/home/home.dart';
 import 'package:flutter_starter/presenter/pages/login/login.dart';
 import 'package:flutter_starter/presenter/pages/main/main_page.dart';
 import 'package:flutter_starter/presenter/pages/register/register.dart';
+import 'package:flutter_starter/presenter/pages/schedule/schedule_page.dart';
 import 'package:flutter_starter/presenter/pages/splash/splash.dart';
 import 'package:injectable/injectable.dart';
 

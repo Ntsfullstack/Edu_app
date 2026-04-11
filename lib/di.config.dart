@@ -51,10 +51,7 @@ extension GetItInjectableX on _i174.GetIt {
     final registerModule = _$RegisterModule();
     gh.singleton<_i558.FlutterSecureStorage>(
         () => registerModule.flutterSecureStorage);
-    gh.singleton<_i823.AuthCubit>(() => _i823.AuthCubit());
     gh.singleton<_i906.SettingsCubit>(() => _i906.SettingsCubit());
-    gh.singleton<_i551.AppRouter>(
-        () => _i551.AppRouter(authBloc: gh<_i823.AuthCubit>()));
     gh.singleton<_i132.OauthTokenManager>(() => _i290.DefaultOauthTokenManager(
         flutterSecureStorage: gh<_i558.FlutterSecureStorage>()));
     gh.singleton<_i193.LocalDataSource>(() => _i193.LocalDataSource(
@@ -84,12 +81,16 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i9.RegisterCubit(register: gh<_i686.RegisterUseCase>()));
     gh.lazySingleton<_i402.TeacherRepository>(
         () => _i349.DefaultTeacherRepository(gh<_i536.NetworkDataSource>()));
+    gh.singleton<_i823.AuthCubit>(
+        () => _i823.AuthCubit(gh<_i344.AuthRepository>()));
     gh.factory<_i588.SplashCubit>(() => _i588.SplashCubit(
           verifyLoginStatus: gh<_i412.VerifyLoginStatusUseCase>(),
           authCubit: gh<_i823.AuthCubit>(),
         ));
     gh.factory<_i1008.GetTodaySchedulesUseCase>(
         () => _i1008.GetTodaySchedulesUseCase(gh<_i402.TeacherRepository>()));
+    gh.singleton<_i551.AppRouter>(
+        () => _i551.AppRouter(authBloc: gh<_i823.AuthCubit>()));
     gh.factory<_i0.LoginCubit>(
         () => _i0.LoginCubit(login: gh<_i470.LoginUseCase>()));
     gh.factory<_i317.TeacherHomeCubit>(
