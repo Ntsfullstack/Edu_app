@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$RegisterState {
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
+  String get phoneNumber => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
   String get confirmPassword => throw _privateConstructorUsedError;
   UserRole get selectedRole => throw _privateConstructorUsedError;
@@ -41,6 +42,7 @@ abstract class $RegisterStateCopyWith<$Res> {
   $Res call(
       {String name,
       String email,
+      String phoneNumber,
       String password,
       String confirmPassword,
       UserRole selectedRole,
@@ -68,6 +70,7 @@ class _$RegisterStateCopyWithImpl<$Res, $Val extends RegisterState>
   $Res call({
     Object? name = null,
     Object? email = null,
+    Object? phoneNumber = null,
     Object? password = null,
     Object? confirmPassword = null,
     Object? selectedRole = null,
@@ -83,6 +86,10 @@ class _$RegisterStateCopyWithImpl<$Res, $Val extends RegisterState>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
       password: null == password
           ? _value.password
@@ -137,6 +144,7 @@ abstract class _$$RegisterStateImplCopyWith<$Res>
   $Res call(
       {String name,
       String email,
+      String phoneNumber,
       String password,
       String confirmPassword,
       UserRole selectedRole,
@@ -163,6 +171,7 @@ class __$$RegisterStateImplCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
     Object? email = null,
+    Object? phoneNumber = null,
     Object? password = null,
     Object? confirmPassword = null,
     Object? selectedRole = null,
@@ -178,6 +187,10 @@ class __$$RegisterStateImplCopyWithImpl<$Res>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
       password: null == password
           ? _value.password
@@ -213,6 +226,7 @@ class _$RegisterStateImpl implements _RegisterState {
   const _$RegisterStateImpl(
       {this.name = '',
       this.email = '',
+      this.phoneNumber = '',
       this.password = '',
       this.confirmPassword = '',
       this.selectedRole = UserRole.teacher,
@@ -226,6 +240,9 @@ class _$RegisterStateImpl implements _RegisterState {
   @override
   @JsonKey()
   final String email;
+  @override
+  @JsonKey()
+  final String phoneNumber;
   @override
   @JsonKey()
   final String password;
@@ -245,7 +262,7 @@ class _$RegisterStateImpl implements _RegisterState {
 
   @override
   String toString() {
-    return 'RegisterState(name: $name, email: $email, password: $password, confirmPassword: $confirmPassword, selectedRole: $selectedRole, status: $status, registerResponse: $registerResponse, error: $error)';
+    return 'RegisterState(name: $name, email: $email, phoneNumber: $phoneNumber, password: $password, confirmPassword: $confirmPassword, selectedRole: $selectedRole, status: $status, registerResponse: $registerResponse, error: $error)';
   }
 
   @override
@@ -255,6 +272,8 @@ class _$RegisterStateImpl implements _RegisterState {
             other is _$RegisterStateImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
             (identical(other.password, password) ||
                 other.password == password) &&
             (identical(other.confirmPassword, confirmPassword) ||
@@ -268,8 +287,8 @@ class _$RegisterStateImpl implements _RegisterState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, name, email, password,
-      confirmPassword, selectedRole, status, registerResponse, error);
+  int get hashCode => Object.hash(runtimeType, name, email, phoneNumber,
+      password, confirmPassword, selectedRole, status, registerResponse, error);
 
   /// Create a copy of RegisterState
   /// with the given fields replaced by the non-null parameter values.
@@ -284,6 +303,7 @@ abstract class _RegisterState implements RegisterState {
   const factory _RegisterState(
       {final String name,
       final String email,
+      final String phoneNumber,
       final String password,
       final String confirmPassword,
       final UserRole selectedRole,
@@ -295,6 +315,8 @@ abstract class _RegisterState implements RegisterState {
   String get name;
   @override
   String get email;
+  @override
+  String get phoneNumber;
   @override
   String get password;
   @override

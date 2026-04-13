@@ -9,6 +9,7 @@ class RegisterResponse with _$RegisterResponse {
   const factory RegisterResponse({
     @JsonKey(name: 'id') required String id,
     @JsonKey(name: 'email') required String email,
+    @JsonKey(name: 'phone_number') required String phoneNumber,
     @JsonKey(name: 'name') required String name,
     @JsonKey(name: 'role') required String role,
     @JsonKey(name: 'access_token') String? accessToken,

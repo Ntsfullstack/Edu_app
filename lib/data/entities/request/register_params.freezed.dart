@@ -24,6 +24,8 @@ mixin _$RegisterParams {
   String get email => throw _privateConstructorUsedError;
   @JsonKey(name: 'password')
   String get password => throw _privateConstructorUsedError;
+  @JsonKey(name: 'phone_number')
+  String get phoneNumber => throw _privateConstructorUsedError;
   @JsonKey(name: 'name')
   String get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'role')
@@ -48,6 +50,7 @@ abstract class $RegisterParamsCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'email') String email,
       @JsonKey(name: 'password') String password,
+      @JsonKey(name: 'phone_number') String phoneNumber,
       @JsonKey(name: 'name') String name,
       @JsonKey(name: 'role') String role});
 }
@@ -69,6 +72,7 @@ class _$RegisterParamsCopyWithImpl<$Res, $Val extends RegisterParams>
   $Res call({
     Object? email = null,
     Object? password = null,
+    Object? phoneNumber = null,
     Object? name = null,
     Object? role = null,
   }) {
@@ -80,6 +84,10 @@ class _$RegisterParamsCopyWithImpl<$Res, $Val extends RegisterParams>
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -104,6 +112,7 @@ abstract class _$$RegisterParamsImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'email') String email,
       @JsonKey(name: 'password') String password,
+      @JsonKey(name: 'phone_number') String phoneNumber,
       @JsonKey(name: 'name') String name,
       @JsonKey(name: 'role') String role});
 }
@@ -123,6 +132,7 @@ class __$$RegisterParamsImplCopyWithImpl<$Res>
   $Res call({
     Object? email = null,
     Object? password = null,
+    Object? phoneNumber = null,
     Object? name = null,
     Object? role = null,
   }) {
@@ -134,6 +144,10 @@ class __$$RegisterParamsImplCopyWithImpl<$Res>
       password: null == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -155,6 +169,7 @@ class _$RegisterParamsImpl
   const _$RegisterParamsImpl(
       {@JsonKey(name: 'email') required this.email,
       @JsonKey(name: 'password') required this.password,
+      @JsonKey(name: 'phone_number') required this.phoneNumber,
       @JsonKey(name: 'name') required this.name,
       @JsonKey(name: 'role') required this.role});
 
@@ -168,6 +183,9 @@ class _$RegisterParamsImpl
   @JsonKey(name: 'password')
   final String password;
   @override
+  @JsonKey(name: 'phone_number')
+  final String phoneNumber;
+  @override
   @JsonKey(name: 'name')
   final String name;
   @override
@@ -176,7 +194,7 @@ class _$RegisterParamsImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'RegisterParams(email: $email, password: $password, name: $name, role: $role)';
+    return 'RegisterParams(email: $email, password: $password, phoneNumber: $phoneNumber, name: $name, role: $role)';
   }
 
   @override
@@ -186,6 +204,7 @@ class _$RegisterParamsImpl
       ..add(DiagnosticsProperty('type', 'RegisterParams'))
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('password', password))
+      ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('role', role));
   }
@@ -198,13 +217,16 @@ class _$RegisterParamsImpl
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.role, role) || other.role == role));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, email, password, name, role);
+  int get hashCode =>
+      Object.hash(runtimeType, email, password, phoneNumber, name, role);
 
   /// Create a copy of RegisterParams
   /// with the given fields replaced by the non-null parameter values.
@@ -227,6 +249,7 @@ abstract class _RegisterParams implements RegisterParams {
   const factory _RegisterParams(
           {@JsonKey(name: 'email') required final String email,
           @JsonKey(name: 'password') required final String password,
+          @JsonKey(name: 'phone_number') required final String phoneNumber,
           @JsonKey(name: 'name') required final String name,
           @JsonKey(name: 'role') required final String role}) =
       _$RegisterParamsImpl;
@@ -240,6 +263,9 @@ abstract class _RegisterParams implements RegisterParams {
   @override
   @JsonKey(name: 'password')
   String get password;
+  @override
+  @JsonKey(name: 'phone_number')
+  String get phoneNumber;
   @override
   @JsonKey(name: 'name')
   String get name;

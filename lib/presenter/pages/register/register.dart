@@ -31,12 +31,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
   // ── Callbacks ────────────────────────────────────────────────────────────
 
-  void _onNameChanged(String v) => _cubit.nameChanged(v);
-  void _onEmailChanged(String v) => _cubit.emailChanged(v);
-  void _onPasswordChanged(String v) => _cubit.passwordChanged(v);
-  void _onConfirmPasswordChanged(String v) => _cubit.confirmPasswordChanged(v);
-  void _onRoleChanged(UserRole role) => _cubit.roleChanged(role);
-  void _onRegisterPressed() => _cubit.register();
+  // void _onNameChanged(String v) => _cubit.nameChanged(v);
+  // void _onEmailChanged(String v) => _cubit.emailChanged(v);
+  // void _onPasswordChanged(String v) => _cubit.passwordChanged(v);
+  // void _onConfirmPasswordChanged(String v) => _cubit.confirmPasswordChanged(v);
+  // void _onRoleChanged(UserRole role) => _cubit.roleChanged(role);
+  // void _onRegisterPressed() => _cubit.register();
 
   void _onSuccess(BuildContext context, RegisterState state) {
     context.router.replaceAll([const HomeRoute()]);
@@ -82,8 +82,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     const _RegisterHeader(),
                     const SizedBox(height: 32),
                     _RegisterForm(
-                      onNameChanged: _onNameChanged,
-                      onEmailChanged: _onEmailChanged,
+                      onNameChanged: _cubit.nameChanged,
+                      onEmailChanged: _cubit.emailChanged,
+                      onPhoneNumberChanged: _cubit.phoneNumberChanged,
                       onPasswordChanged: _cubit.passwordChanged,
                       onConfirmPasswordChanged: _cubit.confirmPasswordChanged,
                       onRoleChanged: _cubit.roleChanged,
@@ -166,6 +167,7 @@ class _RegisterHeader extends StatelessWidget {
 class _RegisterForm extends StatelessWidget {
   final ValueChanged<String> onNameChanged;
   final ValueChanged<String> onEmailChanged;
+  final ValueChanged<String> onPhoneNumberChanged;
   final ValueChanged<String> onPasswordChanged;
   final ValueChanged<String> onConfirmPasswordChanged;
   final ValueChanged<UserRole> onRoleChanged;
@@ -174,6 +176,7 @@ class _RegisterForm extends StatelessWidget {
   const _RegisterForm({
     required this.onNameChanged,
     required this.onEmailChanged,
+    required this.onPhoneNumberChanged,
     required this.onPasswordChanged,
     required this.onConfirmPasswordChanged,
     required this.onRoleChanged,
@@ -201,6 +204,13 @@ class _RegisterForm extends StatelessWidget {
           prefixIcon: Icons.mail_outline_rounded,
           keyboardType: TextInputType.emailAddress,
           onChanged: onEmailChanged,
+          textInputAction: TextInputAction.next,
+        ),
+        _buildTextField(
+          hintText: 'Số điện thoại',
+          prefixIcon: Icons.phone,
+          keyboardType: TextInputType.phone,
+          onChanged: onPhoneNumberChanged,
           textInputAction: TextInputAction.next,
         ),
         // const SizedBox(height: 20),

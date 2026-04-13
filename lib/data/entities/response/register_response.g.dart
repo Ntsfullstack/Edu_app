@@ -11,6 +11,7 @@ _$RegisterResponseImpl _$$RegisterResponseImplFromJson(
     _$RegisterResponseImpl(
       id: json['id'] as String,
       email: json['email'] as String,
+      phoneNumber: json['phone_number'] as String,
       name: json['name'] as String,
       role: json['role'] as String,
       accessToken: json['access_token'] as String?,
@@ -21,6 +22,7 @@ Map<String, dynamic> _$$RegisterResponseImplToJson(
     <String, dynamic>{
       'id': instance.id,
       'email': instance.email,
+      'phone_number': instance.phoneNumber,
       'name': instance.name,
       'role': instance.role,
       'access_token': instance.accessToken,

@@ -19,6 +19,7 @@ class RegisterState with _$RegisterState {
   const factory RegisterState({
     @Default('') String name,
     @Default('') String email,
+    @Default('') String phoneNumber,
     @Default('') String password,
     @Default('') String confirmPassword,
     @Default(UserRole.teacher) UserRole selectedRole,

@@ -10,6 +10,7 @@ _$RegisterParamsImpl _$$RegisterParamsImplFromJson(Map<String, dynamic> json) =>
     _$RegisterParamsImpl(
       email: json['email'] as String,
       password: json['password'] as String,
+      phoneNumber: json['phone_number'] as String,
       name: json['name'] as String,
       role: json['role'] as String,
     );
@@ -19,6 +20,7 @@ Map<String, dynamic> _$$RegisterParamsImplToJson(
     <String, dynamic>{
       'email': instance.email,
       'password': instance.password,
+      'phone_number': instance.phoneNumber,
       'name': instance.name,
       'role': instance.role,
     };

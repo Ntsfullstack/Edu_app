@@ -9,6 +9,7 @@ import 'package:flutter_starter/data/repositories/auth_repository/auth_repositor
 typedef RegisterUseCaseParams = ({
   String name,
   String email,
+  String phoneNumber,
   String password,
   String role,
 });
@@ -27,6 +28,7 @@ class RegisterUseCase extends UseCase<RegisterResponse, RegisterUseCaseParams> {
       params: RegisterParams(
         name: params.name,
         email: params.email,
+        phoneNumber: params.phoneNumber,
         password: params.password,
         role: params.role,
       ),

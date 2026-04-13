@@ -24,6 +24,8 @@ mixin _$RegisterResponse {
   String get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'email')
   String get email => throw _privateConstructorUsedError;
+  @JsonKey(name: 'phone_number')
+  String get phoneNumber => throw _privateConstructorUsedError;
   @JsonKey(name: 'name')
   String get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'role')
@@ -50,6 +52,7 @@ abstract class $RegisterResponseCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'id') String id,
       @JsonKey(name: 'email') String email,
+      @JsonKey(name: 'phone_number') String phoneNumber,
       @JsonKey(name: 'name') String name,
       @JsonKey(name: 'role') String role,
       @JsonKey(name: 'access_token') String? accessToken});
@@ -72,6 +75,7 @@ class _$RegisterResponseCopyWithImpl<$Res, $Val extends RegisterResponse>
   $Res call({
     Object? id = null,
     Object? email = null,
+    Object? phoneNumber = null,
     Object? name = null,
     Object? role = null,
     Object? accessToken = freezed,
@@ -84,6 +88,10 @@ class _$RegisterResponseCopyWithImpl<$Res, $Val extends RegisterResponse>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -112,6 +120,7 @@ abstract class _$$RegisterResponseImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'id') String id,
       @JsonKey(name: 'email') String email,
+      @JsonKey(name: 'phone_number') String phoneNumber,
       @JsonKey(name: 'name') String name,
       @JsonKey(name: 'role') String role,
       @JsonKey(name: 'access_token') String? accessToken});
@@ -132,6 +141,7 @@ class __$$RegisterResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? email = null,
+    Object? phoneNumber = null,
     Object? name = null,
     Object? role = null,
     Object? accessToken = freezed,
@@ -144,6 +154,10 @@ class __$$RegisterResponseImplCopyWithImpl<$Res>
       email: null == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
       name: null == name
           ? _value.name
@@ -169,6 +183,7 @@ class _$RegisterResponseImpl
   const _$RegisterResponseImpl(
       {@JsonKey(name: 'id') required this.id,
       @JsonKey(name: 'email') required this.email,
+      @JsonKey(name: 'phone_number') required this.phoneNumber,
       @JsonKey(name: 'name') required this.name,
       @JsonKey(name: 'role') required this.role,
       @JsonKey(name: 'access_token') this.accessToken});
@@ -183,6 +198,9 @@ class _$RegisterResponseImpl
   @JsonKey(name: 'email')
   final String email;
   @override
+  @JsonKey(name: 'phone_number')
+  final String phoneNumber;
+  @override
   @JsonKey(name: 'name')
   final String name;
   @override
@@ -194,7 +212,7 @@ class _$RegisterResponseImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'RegisterResponse(id: $id, email: $email, name: $name, role: $role, accessToken: $accessToken)';
+    return 'RegisterResponse(id: $id, email: $email, phoneNumber: $phoneNumber, name: $name, role: $role, accessToken: $accessToken)';
   }
 
   @override
@@ -204,6 +222,7 @@ class _$RegisterResponseImpl
       ..add(DiagnosticsProperty('type', 'RegisterResponse'))
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('email', email))
+      ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('role', role))
       ..add(DiagnosticsProperty('accessToken', accessToken));
@@ -216,6 +235,8 @@ class _$RegisterResponseImpl
             other is _$RegisterResponseImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.email, email) || other.email == email) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.role, role) || other.role == role) &&
             (identical(other.accessToken, accessToken) ||
@@ -225,7 +246,7 @@ class _$RegisterResponseImpl
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, email, name, role, accessToken);
+      Object.hash(runtimeType, id, email, phoneNumber, name, role, accessToken);
 
   /// Create a copy of RegisterResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -248,6 +269,7 @@ abstract class _RegisterResponse implements RegisterResponse {
   const factory _RegisterResponse(
           {@JsonKey(name: 'id') required final String id,
           @JsonKey(name: 'email') required final String email,
+          @JsonKey(name: 'phone_number') required final String phoneNumber,
           @JsonKey(name: 'name') required final String name,
           @JsonKey(name: 'role') required final String role,
           @JsonKey(name: 'access_token') final String? accessToken}) =
@@ -262,6 +284,9 @@ abstract class _RegisterResponse implements RegisterResponse {
   @override
   @JsonKey(name: 'email')
   String get email;
+  @override
+  @JsonKey(name: 'phone_number')
+  String get phoneNumber;
   @override
   @JsonKey(name: 'name')
   String get name;

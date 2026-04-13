@@ -21,6 +21,10 @@ class RegisterCubit extends Cubit<RegisterState> {
     emit(state.copyWith(email: email, status: RegisterStatus.initial));
   }
 
+  void phoneChanged(String phone) {
+    emit(state.copyWith(phoneNumber: phone, status: RegisterStatus.initial));
+  }
+
   void passwordChanged(String password) {
     emit(state.copyWith(password: password, status: RegisterStatus.initial));
   }
@@ -53,8 +57,9 @@ class RegisterCubit extends Cubit<RegisterState> {
       final response = await _register((
         name: state.name,
         email: state.email,
+        phoneNumber: state.phoneNumber,
         password: state.password,
-        role: state.selectedRole.name,
+        role: 'parent',
       ));
 
       emit(state.copyWith(
