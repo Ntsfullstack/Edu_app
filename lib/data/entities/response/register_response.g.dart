@@ -9,21 +9,13 @@ part of 'register_response.dart';
 _$RegisterResponseImpl _$$RegisterResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$RegisterResponseImpl(
-      id: json['id'] as String,
-      email: json['email'] as String,
-      phoneNumber: json['phone_number'] as String,
-      name: json['name'] as String,
-      role: json['role'] as String,
+      user: Account.fromJson(json['user'] as Map<String, dynamic>),
       accessToken: json['access_token'] as String?,
     );
 
 Map<String, dynamic> _$$RegisterResponseImplToJson(
         _$RegisterResponseImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'email': instance.email,
-      'phone_number': instance.phoneNumber,
-      'name': instance.name,
-      'role': instance.role,
+      'user': instance.user,
       'access_token': instance.accessToken,
     };

@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_starter/data/entities/user_role.dart';
 import 'package:flutter_starter/data/states/auth/auth_cubit.dart';
 import 'package:flutter_starter/presenter/navigation/navigation.dart';
 import 'package:flutter_starter/presenter/pages/main/widgets/notifications/parent_alerts_view.dart';
@@ -53,15 +52,15 @@ class _MainPageState extends State<MainPage> {
           label: 'Bài tập',
         ),
       if (role.isTeacher || role.isParent)
-        const NavigationDestination(
-          icon: Icon(Icons.calendar_today),
-          selectedIcon: Icon(Icons.calendar_today_outlined, color: Color(0xff005BBF)),
-          label: 'lịch dạy',
+        NavigationDestination(
+          icon: const Icon(Icons.calendar_today),
+          selectedIcon: const Icon(Icons.calendar_today_outlined, color: Color(0xff005BBF)),
+          label: role.isTeacher ? 'lịch dạy' : 'lịch học',
         ),
       const NavigationDestination(
         icon: Icon(Icons.person_outline),
         selectedIcon: Icon(Icons.person, color: Color(0xff005BBF)),
-        label: 'Profile',
+        label: 'Cài đặt',
       ),
     ];
 
@@ -108,42 +107,6 @@ class _NotificationsPageState extends State<NotificationsPage> {
       teacher: TeacherAlertsView(),
       parent: ParentAlertsView(),
       fallback: Center(child: Text('No alerts found')),
-    );
-  }
-}
-
-@RoutePage()
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
-
-  @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profile Settings')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.person, size: 64, color: Colors.blue),
-            const SizedBox(height: 16),
-            const RoleSelector(
-              teacher: Text('Teacher Settings'),
-              student: Text('Student Settings'),
-              parent: Text('Parent Settings'),
-            ),
-            const SizedBox(height: 32),
-            ElevatedButton(
-              onPressed: () => context.read<AuthCubit>().loggedOut(),
-              child: const Text('Logout'),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

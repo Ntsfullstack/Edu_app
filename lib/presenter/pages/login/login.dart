@@ -10,6 +10,7 @@ import 'package:flutter_starter/presenter/pages/login/cubit/login_cubit.dart';
 import 'package:flutter_starter/presenter/pages/login/cubit/login_state.dart';
 import 'package:flutter_starter/presenter/themes/extensions.dart';
 import 'package:flutter_starter/presenter/widgets/loading_indicator.dart';
+import 'package:flutter_starter/presenter/widgets/custom_snackbar.dart';
 import 'package:flutter/gestures.dart';
 @RoutePage()
 class LoginPage extends StatefulWidget implements AutoRouteWrapper {
@@ -22,7 +23,6 @@ class LoginPage extends StatefulWidget implements AutoRouteWrapper {
       child: this,
     );
   }
-
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -44,11 +44,11 @@ class _LoginPageState extends State<LoginPage> {
           listenWhen: (p, c) =>
               p.status != c.status && c.status == LoginStatus.failure,
           listener: (context, state) {
-            final errorMessage = state.error?.message;
-            if (errorMessage == null) return;
+            final msg = state.error?.message;
+            if (msg == null) return;
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(tr(errorMessage)),
+              customSnackbar(
+                message: (msg.startsWith('LocaleKeys') || msg.contains('.')) ? tr(msg) : msg,
                 backgroundColor: context.colors.error,
               ),
             );

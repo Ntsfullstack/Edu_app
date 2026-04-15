@@ -22,8 +22,26 @@ abstract class BaseException<T> extends DioException implements Exception {
           requestOptions: requestOptions ?? RequestOptions(path: ''),
         );
 
+  static String? extractMessage(Object? error) {
+    if (error is DioException) {
+      final responseData = error.response?.data;
+      if (responseData is Map && responseData.containsKey('message')) {
+        return responseData['message'].toString();
+      }
+    }
+    return null;
+  }
+
   static BaseException from(Object? error) {
-    return error is BaseException ? error : UnknownException(error);
+    if (error is BaseException) return error;
+    final serverMessage = extractMessage(error);
+    if (serverMessage != null && error is DioException) {
+      return ServerException(
+        serverMessage,
+        response: error.response,
+      );
+    }
+    return UnknownException(error);
   }
 
   @override
@@ -43,4 +61,8 @@ class UnknownException extends BaseException {
 
 class NetworkException extends BaseException {
   NetworkException() : super(LocaleKeys.Errors_NetworkError);
+}
+
+class ServerException extends BaseException {
+  ServerException(String message, {super.response}) : super(message);
 }

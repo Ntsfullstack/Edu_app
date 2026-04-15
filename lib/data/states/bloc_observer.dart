@@ -6,6 +6,9 @@ import 'package:flutter_starter/presenter/pages/login/cubit/login_state.dart';
 import 'package:flutter_starter/presenter/pages/splash/cubit/splash_cubit.dart';
 import 'package:flutter_starter/presenter/pages/splash/cubit/splash_state.dart';
 
+import 'package:flutter_starter/presenter/pages/register/cubit/register_cubit.dart';
+import 'package:flutter_starter/presenter/pages/register/cubit/register_state.dart';
+
 class AppBlocObserver extends BlocObserver {
   final AuthCubit _authCubit;
 
@@ -17,6 +20,10 @@ class AppBlocObserver extends BlocObserver {
 
     if (bloc is LoginCubit && change is Change<LoginState>) {
       _onLoginCubitChanged(bloc, change);
+    }
+
+    if (bloc is RegisterCubit && change is Change<RegisterState>) {
+      _onRegisterCubitChanged(bloc, change);
     }
 
     if (bloc is SplashCubit && change is Change<SplashState>) {
@@ -37,6 +44,13 @@ class AppBlocObserver extends BlocObserver {
     if (change.nextState.status == LoginStatus.success &&
         change.nextState.account != null) {
       _authCubit.loggedIn(change.nextState.account!);
+    }
+  }
+
+  void _onRegisterCubitChanged(RegisterCubit bloc, Change<RegisterState> change) {
+    if (change.nextState.status == RegisterStatus.success &&
+        change.nextState.registerResponse?.user != null) {
+      _authCubit.loggedIn(change.nextState.registerResponse!.user);
     }
   }
 

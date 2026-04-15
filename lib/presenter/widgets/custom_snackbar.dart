@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-Widget customSnackbar ({
+
+SnackBar customSnackbar({
   required String message,
   Color backgroundColor = Colors.black87,
   Duration duration = const Duration(seconds: 3),

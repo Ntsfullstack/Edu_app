@@ -24,6 +24,7 @@ mixin _$Account {
   String get email => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   UserRole get role => throw _privateConstructorUsedError;
+  String? get phoneNumber => throw _privateConstructorUsedError;
   bool get isActive => throw _privateConstructorUsedError;
   String? get avatar => throw _privateConstructorUsedError;
   String? get createdAt => throw _privateConstructorUsedError;
@@ -49,6 +50,7 @@ abstract class $AccountCopyWith<$Res> {
       String email,
       String name,
       UserRole role,
+      String? phoneNumber,
       bool isActive,
       String? avatar,
       String? createdAt,
@@ -75,6 +77,7 @@ class _$AccountCopyWithImpl<$Res, $Val extends Account>
     Object? email = null,
     Object? name = null,
     Object? role = null,
+    Object? phoneNumber = freezed,
     Object? isActive = null,
     Object? avatar = freezed,
     Object? createdAt = freezed,
@@ -98,6 +101,10 @@ class _$AccountCopyWithImpl<$Res, $Val extends Account>
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
               as UserRole,
+      phoneNumber: freezed == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
       isActive: null == isActive
           ? _value.isActive
           : isActive // ignore: cast_nullable_to_non_nullable
@@ -134,6 +141,7 @@ abstract class _$$AccountImplCopyWith<$Res> implements $AccountCopyWith<$Res> {
       String email,
       String name,
       UserRole role,
+      String? phoneNumber,
       bool isActive,
       String? avatar,
       String? createdAt,
@@ -158,6 +166,7 @@ class __$$AccountImplCopyWithImpl<$Res>
     Object? email = null,
     Object? name = null,
     Object? role = null,
+    Object? phoneNumber = freezed,
     Object? isActive = null,
     Object? avatar = freezed,
     Object? createdAt = freezed,
@@ -181,6 +190,10 @@ class __$$AccountImplCopyWithImpl<$Res>
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
               as UserRole,
+      phoneNumber: freezed == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
       isActive: null == isActive
           ? _value.isActive
           : isActive // ignore: cast_nullable_to_non_nullable
@@ -214,6 +227,7 @@ class _$AccountImpl implements _Account {
       required this.email,
       required this.name,
       required this.role,
+      this.phoneNumber,
       this.isActive = true,
       this.avatar,
       this.createdAt,
@@ -232,6 +246,8 @@ class _$AccountImpl implements _Account {
   @override
   final UserRole role;
   @override
+  final String? phoneNumber;
+  @override
   @JsonKey()
   final bool isActive;
   @override
@@ -245,7 +261,7 @@ class _$AccountImpl implements _Account {
 
   @override
   String toString() {
-    return 'Account(id: $id, email: $email, name: $name, role: $role, isActive: $isActive, avatar: $avatar, createdAt: $createdAt, updatedAt: $updatedAt, activeStudentId: $activeStudentId)';
+    return 'Account(id: $id, email: $email, name: $name, role: $role, phoneNumber: $phoneNumber, isActive: $isActive, avatar: $avatar, createdAt: $createdAt, updatedAt: $updatedAt, activeStudentId: $activeStudentId)';
   }
 
   @override
@@ -257,6 +273,8 @@ class _$AccountImpl implements _Account {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.role, role) || other.role == role) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
             (identical(other.isActive, isActive) ||
                 other.isActive == isActive) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
@@ -270,8 +288,8 @@ class _$AccountImpl implements _Account {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, email, name, role, isActive,
-      avatar, createdAt, updatedAt, activeStudentId);
+  int get hashCode => Object.hash(runtimeType, id, email, name, role,
+      phoneNumber, isActive, avatar, createdAt, updatedAt, activeStudentId);
 
   /// Create a copy of Account
   /// with the given fields replaced by the non-null parameter values.
@@ -295,6 +313,7 @@ abstract class _Account implements Account {
       required final String email,
       required final String name,
       required final UserRole role,
+      final String? phoneNumber,
       final bool isActive,
       final String? avatar,
       final String? createdAt,
@@ -311,6 +330,8 @@ abstract class _Account implements Account {
   String get name;
   @override
   UserRole get role;
+  @override
+  String? get phoneNumber;
   @override
   bool get isActive;
   @override

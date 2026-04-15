@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:flutter_starter/core/exception.dart';
 import 'package:flutter_starter/data/entities/account.dart';
 import 'package:flutter_starter/data/entities/request/login_params.dart';
 import 'package:flutter_starter/data/entities/request/register_params.dart';
@@ -25,7 +26,10 @@ class DefaultAuthRepository extends AuthRepository {
     try {
       return await _networkDataSource.getCurrentAccount();
     } catch (e) {
-      throw UnauthorizedException();
+      throw UnauthorizedException(
+        message: BaseException.extractMessage(e),
+        response: e is DioException ? e.response : null,
+      );
     }
   }
 
@@ -43,8 +47,11 @@ class DefaultAuthRepository extends AuthRepository {
       await _oauthTokenManager.saveAccessToken(response.accessToken);
 
       return response.user;
-    } on DioException {
-      throw LoginInvalidEmailPasswordException();
+    } on DioException catch (e) {
+      throw LoginInvalidEmailPasswordException(
+        message: BaseException.extractMessage(e),
+        response: e.response,
+      );
     }
   }
 
@@ -53,13 +60,26 @@ class DefaultAuthRepository extends AuthRepository {
     required RegisterParams params,
   }) async {
     try {
-      return await _networkDataSource.register(params);
+      final response = await _networkDataSource.register(params);
+      
+      if (response.accessToken != null) {
+        await _oauthTokenManager.saveAccessToken(response.accessToken);
+      }
+      
+      return response;
     } on DioException catch (e) {
+      final serverMessage = BaseException.extractMessage(e);
       final statusCode = e.response?.statusCode;
       if (statusCode == 409) {
-        throw EmailAlreadyExistsException();
+        throw EmailAlreadyExistsException(
+          message: serverMessage,
+          response: e.response,
+        );
       }
-      throw RegisterFailedException();
+      throw RegisterFailedException(
+        message: serverMessage,
+        response: e.response,
+      );
     }
   }
 

@@ -17,9 +17,9 @@ enum UserRole {
 
   String get label {
     switch (this) {
-      case UserRole.teacher: return 'Teacher';
-      case UserRole.student: return 'Student';
-      case UserRole.parent: return 'Parent';
+      case UserRole.teacher: return 'Giáo viên';
+      case UserRole.student: return 'Học sinh';
+      case UserRole.parent: return 'Phụ huynh';
       case UserRole.admin: return 'Admin';
     }
   }

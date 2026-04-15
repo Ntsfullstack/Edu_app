@@ -24,7 +24,7 @@ mixin _$RegisterParams {
   String get email => throw _privateConstructorUsedError;
   @JsonKey(name: 'password')
   String get password => throw _privateConstructorUsedError;
-  @JsonKey(name: 'phone_number')
+  @JsonKey(name: 'phoneNumber')
   String get phoneNumber => throw _privateConstructorUsedError;
   @JsonKey(name: 'name')
   String get name => throw _privateConstructorUsedError;
@@ -50,7 +50,7 @@ abstract class $RegisterParamsCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'email') String email,
       @JsonKey(name: 'password') String password,
-      @JsonKey(name: 'phone_number') String phoneNumber,
+      @JsonKey(name: 'phoneNumber') String phoneNumber,
       @JsonKey(name: 'name') String name,
       @JsonKey(name: 'role') String role});
 }
@@ -112,7 +112,7 @@ abstract class _$$RegisterParamsImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'email') String email,
       @JsonKey(name: 'password') String password,
-      @JsonKey(name: 'phone_number') String phoneNumber,
+      @JsonKey(name: 'phoneNumber') String phoneNumber,
       @JsonKey(name: 'name') String name,
       @JsonKey(name: 'role') String role});
 }
@@ -169,7 +169,7 @@ class _$RegisterParamsImpl
   const _$RegisterParamsImpl(
       {@JsonKey(name: 'email') required this.email,
       @JsonKey(name: 'password') required this.password,
-      @JsonKey(name: 'phone_number') required this.phoneNumber,
+      @JsonKey(name: 'phoneNumber') required this.phoneNumber,
       @JsonKey(name: 'name') required this.name,
       @JsonKey(name: 'role') required this.role});
 
@@ -183,7 +183,7 @@ class _$RegisterParamsImpl
   @JsonKey(name: 'password')
   final String password;
   @override
-  @JsonKey(name: 'phone_number')
+  @JsonKey(name: 'phoneNumber')
   final String phoneNumber;
   @override
   @JsonKey(name: 'name')
@@ -249,7 +249,7 @@ abstract class _RegisterParams implements RegisterParams {
   const factory _RegisterParams(
           {@JsonKey(name: 'email') required final String email,
           @JsonKey(name: 'password') required final String password,
-          @JsonKey(name: 'phone_number') required final String phoneNumber,
+          @JsonKey(name: 'phoneNumber') required final String phoneNumber,
           @JsonKey(name: 'name') required final String name,
           @JsonKey(name: 'role') required final String role}) =
       _$RegisterParamsImpl;
@@ -264,7 +264,7 @@ abstract class _RegisterParams implements RegisterParams {
   @JsonKey(name: 'password')
   String get password;
   @override
-  @JsonKey(name: 'phone_number')
+  @JsonKey(name: 'phoneNumber')
   String get phoneNumber;
   @override
   @JsonKey(name: 'name')

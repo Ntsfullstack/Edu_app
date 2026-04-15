@@ -75,6 +75,22 @@ class NotificationsRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [ProfileDetailPage]
+class ProfileDetailRoute extends PageRouteInfo<void> {
+  const ProfileDetailRoute({List<PageRouteInfo>? children})
+    : super(ProfileDetailRoute.name, initialChildren: children);
+
+  static const String name = 'ProfileDetailRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ProfileDetailPage();
+    },
+  );
+}
+
+/// generated route for
 /// [RegisterPage]
 class RegisterRoute extends PageRouteInfo<void> {
   const RegisterRoute({List<PageRouteInfo>? children})

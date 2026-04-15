@@ -12,6 +12,7 @@ class Account with _$Account {
     required String email,
     required String name,
     required UserRole role,
+    String? phoneNumber,
     @Default(true) bool isActive,
     String? avatar,
     String? createdAt,

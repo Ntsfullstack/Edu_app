@@ -9,6 +9,8 @@ import 'package:flutter_starter/presenter/pages/register/cubit/register_cubit.da
 import 'package:flutter_starter/presenter/pages/register/cubit/register_state.dart';
 import 'package:flutter_starter/presenter/themes/extensions.dart';
 import 'package:flutter_starter/presenter/widgets/loading_indicator.dart';
+import 'package:flutter_starter/presenter/widgets/custom_snackbar.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 @RoutePage()
 class RegisterPage extends StatefulWidget implements AutoRouteWrapper {
@@ -28,16 +30,6 @@ class RegisterPage extends StatefulWidget implements AutoRouteWrapper {
 
 class _RegisterPageState extends State<RegisterPage> {
   RegisterCubit get _cubit => context.read<RegisterCubit>();
-
-  // ── Callbacks ────────────────────────────────────────────────────────────
-
-  // void _onNameChanged(String v) => _cubit.nameChanged(v);
-  // void _onEmailChanged(String v) => _cubit.emailChanged(v);
-  // void _onPasswordChanged(String v) => _cubit.passwordChanged(v);
-  // void _onConfirmPasswordChanged(String v) => _cubit.confirmPasswordChanged(v);
-  // void _onRoleChanged(UserRole role) => _cubit.roleChanged(role);
-  // void _onRegisterPressed() => _cubit.register();
-
   void _onSuccess(BuildContext context, RegisterState state) {
     context.router.replaceAll([const HomeRoute()]);
   }
@@ -46,8 +38,8 @@ class _RegisterPageState extends State<RegisterPage> {
     final msg = state.error?.message;
     if (msg == null) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(msg),
+      customSnackbar(
+        message: (msg.startsWith('LocaleKeys') || msg.contains('.')) ? tr(msg) : msg,
         backgroundColor: context.colors.error,
       ),
     );
@@ -119,6 +111,14 @@ class _RegisterHeader extends StatelessWidget {
       children: [
         Row(
           children: [
+            GestureDetector(
+              onTap: () => context.router.back(),
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Color(0xFF1A6BFF),
+              ),
+            ),
+            SizedBox(width: 12),
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
@@ -206,6 +206,9 @@ class _RegisterForm extends StatelessWidget {
           onChanged: onEmailChanged,
           textInputAction: TextInputAction.next,
         ),
+        const SizedBox(height: 20),
+        const _Label('Số điện thoại'),
+        const SizedBox(height: 8),
         _buildTextField(
           hintText: 'Số điện thoại',
           prefixIcon: Icons.phone,

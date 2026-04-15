@@ -21,7 +21,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     emit(state.copyWith(email: email, status: RegisterStatus.initial));
   }
 
-  void phoneChanged(String phone) {
+  void phoneNumberChanged(String phone) {
     emit(state.copyWith(phoneNumber: phone, status: RegisterStatus.initial));
   }
 

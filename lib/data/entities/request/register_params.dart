@@ -9,7 +9,7 @@ class RegisterParams with _$RegisterParams {
   const factory RegisterParams({
     @JsonKey(name: 'email') required String email,
     @JsonKey(name: 'password') required String password,
-    @JsonKey(name: 'phone_number') required String phoneNumber,
+    @JsonKey(name: 'phoneNumber') required String phoneNumber,
     @JsonKey(name: 'name') required String name,
     @JsonKey(name: 'role') required String role,
   }) = _RegisterParams;

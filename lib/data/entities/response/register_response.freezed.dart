@@ -20,16 +20,8 @@ RegisterResponse _$RegisterResponseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$RegisterResponse {
-  @JsonKey(name: 'id')
-  String get id => throw _privateConstructorUsedError;
-  @JsonKey(name: 'email')
-  String get email => throw _privateConstructorUsedError;
-  @JsonKey(name: 'phone_number')
-  String get phoneNumber => throw _privateConstructorUsedError;
-  @JsonKey(name: 'name')
-  String get name => throw _privateConstructorUsedError;
-  @JsonKey(name: 'role')
-  String get role => throw _privateConstructorUsedError;
+  @JsonKey(name: 'user')
+  Account get user => throw _privateConstructorUsedError;
   @JsonKey(name: 'access_token')
   String? get accessToken => throw _privateConstructorUsedError;
 
@@ -50,12 +42,10 @@ abstract class $RegisterResponseCopyWith<$Res> {
       _$RegisterResponseCopyWithImpl<$Res, RegisterResponse>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') String id,
-      @JsonKey(name: 'email') String email,
-      @JsonKey(name: 'phone_number') String phoneNumber,
-      @JsonKey(name: 'name') String name,
-      @JsonKey(name: 'role') String role,
+      {@JsonKey(name: 'user') Account user,
       @JsonKey(name: 'access_token') String? accessToken});
+
+  $AccountCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -73,39 +63,29 @@ class _$RegisterResponseCopyWithImpl<$Res, $Val extends RegisterResponse>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? email = null,
-    Object? phoneNumber = null,
-    Object? name = null,
-    Object? role = null,
+    Object? user = null,
     Object? accessToken = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      phoneNumber: null == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      role: null == role
-          ? _value.role
-          : role // ignore: cast_nullable_to_non_nullable
-              as String,
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as Account,
       accessToken: freezed == accessToken
           ? _value.accessToken
           : accessToken // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
+  }
+
+  /// Create a copy of RegisterResponse
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AccountCopyWith<$Res> get user {
+    return $AccountCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
   }
 }
 
@@ -118,12 +98,11 @@ abstract class _$$RegisterResponseImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') String id,
-      @JsonKey(name: 'email') String email,
-      @JsonKey(name: 'phone_number') String phoneNumber,
-      @JsonKey(name: 'name') String name,
-      @JsonKey(name: 'role') String role,
+      {@JsonKey(name: 'user') Account user,
       @JsonKey(name: 'access_token') String? accessToken});
+
+  @override
+  $AccountCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -139,34 +118,14 @@ class __$$RegisterResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? email = null,
-    Object? phoneNumber = null,
-    Object? name = null,
-    Object? role = null,
+    Object? user = null,
     Object? accessToken = freezed,
   }) {
     return _then(_$RegisterResponseImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      phoneNumber: null == phoneNumber
-          ? _value.phoneNumber
-          : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      role: null == role
-          ? _value.role
-          : role // ignore: cast_nullable_to_non_nullable
-              as String,
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as Account,
       accessToken: freezed == accessToken
           ? _value.accessToken
           : accessToken // ignore: cast_nullable_to_non_nullable
@@ -181,38 +140,22 @@ class _$RegisterResponseImpl
     with DiagnosticableTreeMixin
     implements _RegisterResponse {
   const _$RegisterResponseImpl(
-      {@JsonKey(name: 'id') required this.id,
-      @JsonKey(name: 'email') required this.email,
-      @JsonKey(name: 'phone_number') required this.phoneNumber,
-      @JsonKey(name: 'name') required this.name,
-      @JsonKey(name: 'role') required this.role,
+      {@JsonKey(name: 'user') required this.user,
       @JsonKey(name: 'access_token') this.accessToken});
 
   factory _$RegisterResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$RegisterResponseImplFromJson(json);
 
   @override
-  @JsonKey(name: 'id')
-  final String id;
-  @override
-  @JsonKey(name: 'email')
-  final String email;
-  @override
-  @JsonKey(name: 'phone_number')
-  final String phoneNumber;
-  @override
-  @JsonKey(name: 'name')
-  final String name;
-  @override
-  @JsonKey(name: 'role')
-  final String role;
+  @JsonKey(name: 'user')
+  final Account user;
   @override
   @JsonKey(name: 'access_token')
   final String? accessToken;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'RegisterResponse(id: $id, email: $email, phoneNumber: $phoneNumber, name: $name, role: $role, accessToken: $accessToken)';
+    return 'RegisterResponse(user: $user, accessToken: $accessToken)';
   }
 
   @override
@@ -220,11 +163,7 @@ class _$RegisterResponseImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'RegisterResponse'))
-      ..add(DiagnosticsProperty('id', id))
-      ..add(DiagnosticsProperty('email', email))
-      ..add(DiagnosticsProperty('phoneNumber', phoneNumber))
-      ..add(DiagnosticsProperty('name', name))
-      ..add(DiagnosticsProperty('role', role))
+      ..add(DiagnosticsProperty('user', user))
       ..add(DiagnosticsProperty('accessToken', accessToken));
   }
 
@@ -233,20 +172,14 @@ class _$RegisterResponseImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RegisterResponseImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.phoneNumber, phoneNumber) ||
-                other.phoneNumber == phoneNumber) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.role, role) || other.role == role) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, email, phoneNumber, name, role, accessToken);
+  int get hashCode => Object.hash(runtimeType, user, accessToken);
 
   /// Create a copy of RegisterResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -267,11 +200,7 @@ class _$RegisterResponseImpl
 
 abstract class _RegisterResponse implements RegisterResponse {
   const factory _RegisterResponse(
-          {@JsonKey(name: 'id') required final String id,
-          @JsonKey(name: 'email') required final String email,
-          @JsonKey(name: 'phone_number') required final String phoneNumber,
-          @JsonKey(name: 'name') required final String name,
-          @JsonKey(name: 'role') required final String role,
+          {@JsonKey(name: 'user') required final Account user,
           @JsonKey(name: 'access_token') final String? accessToken}) =
       _$RegisterResponseImpl;
 
@@ -279,20 +208,8 @@ abstract class _RegisterResponse implements RegisterResponse {
       _$RegisterResponseImpl.fromJson;
 
   @override
-  @JsonKey(name: 'id')
-  String get id;
-  @override
-  @JsonKey(name: 'email')
-  String get email;
-  @override
-  @JsonKey(name: 'phone_number')
-  String get phoneNumber;
-  @override
-  @JsonKey(name: 'name')
-  String get name;
-  @override
-  @JsonKey(name: 'role')
-  String get role;
+  @JsonKey(name: 'user')
+  Account get user;
   @override
   @JsonKey(name: 'access_token')
   String? get accessToken;
