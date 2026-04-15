@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_starter/data/states/auth/auth_cubit.dart';
+import 'package:flutter_starter/presenter/navigation/navigation.dart';
 import 'package:flutter_starter/presenter/pages/setting/widgets/profile_info_card.dart';
 
 @RoutePage()
@@ -67,7 +68,7 @@ class ProfileDetailPage extends StatelessWidget {
               iconColor: const Color(0xFF4CAF50),
               iconBgColor: const Color(0xFFE8F5E9),
               label: account.role.isTeacher ? 'Mã số giáo viên' : 'Mã số học sinh',
-              value: 'EDU-${account.id.substring(0, 6).toUpperCase()}',
+              value: 'EDU-${account.id.substring(0, 8).toUpperCase()}',
             ),
             const SizedBox(height: 16),
             ProfileInfoCard(
@@ -75,7 +76,7 @@ class ProfileDetailPage extends StatelessWidget {
               iconColor: const Color(0xFF795548),
               iconBgColor: const Color(0xFFEFEBE9),
               label: 'Phòng ban / Lớp học',
-              value: account.role.isTeacher ? 'Khối 10 - Phòng 102' : 'Khối 10 - Lớp 10A1',
+              value: account.role.isTeacher ? 'Giáo viên' : 'Phụ huynh',
               trailing: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
@@ -94,7 +95,7 @@ class ProfileDetailPage extends StatelessWidget {
             ),
             const SizedBox(height: 32),
             _buildActionButton(
-              onPressed: () {},
+              onPressed: () => context.router.push(const UpdateProfileRoute()),
               icon: Icons.edit_outlined,
               label: 'Chỉnh sửa hồ sơ',
               color: const Color(0xFF1A6BFF),

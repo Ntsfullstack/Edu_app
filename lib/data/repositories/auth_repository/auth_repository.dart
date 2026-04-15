@@ -1,5 +1,6 @@
 import 'package:flutter_starter/data/entities/account.dart';
 import 'package:flutter_starter/data/entities/request/register_params.dart';
+import 'package:flutter_starter/data/entities/request/update_profile_params.dart';
 import 'package:flutter_starter/data/entities/response/register_response.dart';
 
 abstract class AuthRepository {
@@ -12,6 +13,10 @@ abstract class AuthRepository {
 
   Future<RegisterResponse> register({
     required RegisterParams params,
+  });
+
+  Future<Account> updateProfile({
+    required UpdateProfileParams params,
   });
 
   Future<void> logout();

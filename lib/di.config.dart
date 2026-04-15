@@ -33,6 +33,8 @@ import 'presenter/navigation/navigation.dart' as _i551;
 import 'presenter/pages/home/cubit/teacher_home_cubit.dart' as _i317;
 import 'presenter/pages/login/cubit/login_cubit.dart' as _i0;
 import 'presenter/pages/register/cubit/register_cubit.dart' as _i9;
+import 'presenter/pages/setting/update_profile/cubit/update_profile_cubit.dart'
+    as _i1020;
 import 'presenter/pages/splash/cubit/splash_cubit.dart' as _i588;
 import 'services/oauth_token_manager/oauth_token_manager.dart' as _i132;
 import 'services/oauth_token_manager/oauth_token_manager.default.dart' as _i290;
@@ -93,6 +95,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i551.AppRouter(authBloc: gh<_i823.AuthCubit>()));
     gh.factory<_i0.LoginCubit>(
         () => _i0.LoginCubit(login: gh<_i470.LoginUseCase>()));
+    gh.factory<_i1020.UpdateProfileCubit>(() => _i1020.UpdateProfileCubit(
+          gh<_i344.AuthRepository>(),
+          gh<_i823.AuthCubit>(),
+        ));
     gh.factory<_i317.TeacherHomeCubit>(
         () => _i317.TeacherHomeCubit(gh<_i1008.GetTodaySchedulesUseCase>()));
     return this;

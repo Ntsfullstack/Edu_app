@@ -24,3 +24,8 @@ class EmailAlreadyExistsException extends AuthException {
   EmailAlreadyExistsException({String? message, super.response})
       : super(message: message ?? LocaleKeys.Errors_AnUnknownErrorOccurred);
 }
+
+class UpdateProfileFailedException extends AuthException {
+  UpdateProfileFailedException({String? message, super.response})
+      : super(message: message ?? LocaleKeys.Errors_AnUnknownErrorOccurred);
+}

@@ -8,6 +8,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:flutter_starter/data/entities/account.dart';
 import 'package:flutter_starter/data/sources/network/dio.dart';
 
+import 'package:flutter_starter/data/entities/request/update_profile_params.dart';
 import 'package:flutter_starter/data/entities/schedule.dart';
 
 part 'network.g.dart';
@@ -23,6 +24,9 @@ abstract class NetworkDataSource {
 
   @GET('/users/me')
   Future<Account> getCurrentAccount();
+
+  @PATCH('/users/me')
+  Future<Account> updateProfile(@Body() UpdateProfileParams params);
 
   @POST('/auth/register')
   Future<RegisterResponse> register(@Body() RegisterParams params);

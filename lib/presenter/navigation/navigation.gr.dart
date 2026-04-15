@@ -153,3 +153,19 @@ class SplashRoute extends PageRouteInfo<void> {
     },
   );
 }
+
+/// generated route for
+/// [UpdateProfilePage]
+class UpdateProfileRoute extends PageRouteInfo<void> {
+  const UpdateProfileRoute({List<PageRouteInfo>? children})
+    : super(UpdateProfileRoute.name, initialChildren: children);
+
+  static const String name = 'UpdateProfileRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return WrappedRoute(child: const UpdateProfilePage());
+    },
+  );
+}

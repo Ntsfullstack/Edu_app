@@ -4,6 +4,7 @@ import 'package:flutter_starter/presenter/pages/home/home.dart';
 import 'package:flutter_starter/presenter/pages/login/login.dart';
 import 'package:flutter_starter/presenter/pages/main/main_page.dart';
 import 'package:flutter_starter/presenter/pages/setting/profile_detail.dart';
+import 'package:flutter_starter/presenter/pages/setting/update_profile/update_profile_page.dart';
 import 'package:flutter_starter/presenter/pages/setting/setting.dart';
 import 'package:flutter_starter/presenter/pages/register/register.dart';
 import 'package:flutter_starter/presenter/pages/schedule/schedule_page.dart';
@@ -26,6 +27,8 @@ class AppRouter extends RootStackRouter {
         AutoRoute(path: '/', page: SplashRoute.page),
         AutoRoute(path: '/login', page: LoginRoute.page),
         AutoRoute(path: '/register', page: RegisterRoute.page),
+        AutoRoute(path: '/profile-detail', page: ProfileDetailRoute.page),
+        AutoRoute(path: '/update-profile', page: UpdateProfileRoute.page),
         AutoRoute(
           path: '/dashboard',
           page: MainRoute.page,
@@ -34,7 +37,6 @@ class AppRouter extends RootStackRouter {
             AutoRoute(path: 'schedule', page: ScheduleRoute.page),
             AutoRoute(path: 'notifications', page: NotificationsRoute.page),
             AutoRoute(path: 'settings', page: SettingsRoute.page),
-            AutoRoute(path: 'profile-detail', page: ProfileDetailRoute.page),
           ],
         ),
       ];
@@ -51,6 +53,7 @@ class AppRouter extends RootStackRouter {
         NotificationsRoute.name,
         SettingsRoute.name,
         ProfileDetailRoute.name,
+        UpdateProfileRoute.name,
       ].contains(routeName);
 
   @override

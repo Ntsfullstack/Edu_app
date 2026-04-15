@@ -7,6 +7,7 @@ import 'package:flutter_starter/data/entities/request/register_params.dart';
 import 'package:flutter_starter/data/entities/response/register_response.dart';
 import 'package:flutter_starter/data/repositories/auth_repository/auth_repository.dart';
 import 'package:flutter_starter/data/repositories/auth_repository/exceptions.dart';
+import 'package:flutter_starter/data/entities/request/update_profile_params.dart';
 import 'package:flutter_starter/data/sources/network/network.dart';
 import 'package:flutter_starter/services/oauth_token_manager/oauth_token_manager.dart';
 
@@ -78,6 +79,20 @@ class DefaultAuthRepository extends AuthRepository {
       }
       throw RegisterFailedException(
         message: serverMessage,
+        response: e.response,
+      );
+    }
+  }
+
+  @override
+  Future<Account> updateProfile({
+    required UpdateProfileParams params,
+  }) async {
+    try {
+      return await _networkDataSource.updateProfile(params);
+    } on DioException catch (e) {
+      throw UpdateProfileFailedException(
+        message: BaseException.extractMessage(e),
         response: e.response,
       );
     }

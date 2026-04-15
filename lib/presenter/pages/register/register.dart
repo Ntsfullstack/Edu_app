@@ -37,11 +37,10 @@ class _RegisterPageState extends State<RegisterPage> {
   void _onError(BuildContext context, RegisterState state) {
     final msg = state.error?.message;
     if (msg == null) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      customSnackbar(
-        message: (msg.startsWith('LocaleKeys') || msg.contains('.')) ? tr(msg) : msg,
-        backgroundColor: context.colors.error,
-      ),
+    showCustomSnackbar(
+      context,
+      message: (msg.startsWith('LocaleKeys') || msg.contains('.')) ? tr(msg) : msg,
+      type: SnackbarType.error,
     );
   }
 
